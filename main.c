@@ -11,6 +11,9 @@ typedef struct card {
     struct card *next;
 } Card;
 
+//Works
+// Creates a struct of type Card. Holds the suit and value.
+// TODO: The struct also needs to hold a boolean representing if the card is face up or face down.
 Card * createCard(char *value,char *suit){
     Card * newCard;
 
@@ -25,6 +28,8 @@ Card * createCard(char *value,char *suit){
     return newCard;
 }
 
+// Works
+// Prints out the entire deck.
 void printCardList(Card *list) {
 // list points to the head of a linked list of Flights
     int count = 1;
@@ -41,6 +46,8 @@ void printCardList(Card *list) {
     printf("\n\n");
 }
 
+// Works.
+// Creates a linked list representing a unshuffled deck.
 Card * createDeck(){
     Card *deck= NULL;
 
@@ -62,8 +69,9 @@ Card * createDeck(){
 }
 
 
-
-void dealCards(Card *deck,Card *column[7]){
+// Works.
+// Deals the cards from the deck into linked lists representing the columns.
+void dealCards(Card *deck,Card *column[]){
 
 
     int columnValues[] = {1,6,7,8,9,10,11};
@@ -97,110 +105,55 @@ void dealCards(Card *deck,Card *column[7]){
 }
 
 
+// Doesn't work
+Card * extractLast(Card card){
+    /*
+    Card returnCard;
+    while(card.next!=NULL){
+        card=*card.next;
+    }
+    returnCard=card;
+    card=NULL;
+    return returnCard;
+     */
+}
+
+// Doesn't work
+// Prints out the game state. Should be called after each input and action.
+void printGameState(Card * column[]){
+    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
+
+    for(int j=0;j<13;j++) {
+        for (int i = 0; i < 7; i++) {
+            Card * currentCard=column[i];
+            int count=0;
+            while(currentCard->next!=NULL){
+                currentCard=currentCard->next;
+                count++;
+            }
+
+            if(currentCard!=NULL){
+                printf("%s%s\t", currentCard->value, currentCard->suit);
+            } else{
+                printf("\t");
+            }
+
+
+
+        }
+        printf("\n");
+    }
+
+}
+
+
 
 int main() {
-
-
-Card *deck = createDeck();
-Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
-dealCards(deck,column);
-
-
-
-
-/*
-Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
-
-
-int columnValues[] = {1,6,7,8,9,10,11};
-
-Card * currentCard = (Card*)malloc(sizeof (Card));
-
-currentCard = deck;
-for(int i=0;i<11;i++) {
-    for (int j = 0; j < 7; j++) {
-        int allowedAmountOfCards = columnValues[j];
-        int currentIndex = 0;
-
-
-        Card *currentPlacement = column[j];
-
-
-        while (currentPlacement != NULL && currentIndex < allowedAmountOfCards) {
-            currentPlacement = currentPlacement->next;
-            currentIndex++;
-        }
-        if(currentIndex<allowedAmountOfCards) {
-            currentPlacement = createCard(currentCard->value, currentCard->suit);
-            currentPlacement->next = column[j];
-            column[j] = currentPlacement;
-
-
-            currentCard = currentCard->next;
-        }
-    }
-}
-*/
-
-
-
-
-
-
-
-
+    Card *deck = createDeck();
+    Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+    dealCards(deck,column);
     printCardList(deck);
-
-
-
-
-
-
-/*
-printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
-for(int i=0;i<13;i++){
-    Card * currentCard = column[i];
-    for(int j=13-i;j<13;){
-
-    }
-
-    printf("%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t\t\t[]\tF1\n",
-           column[0]->value,column[0]->suit,
-           column[1]->value,column[1]->suit,
-           column[2]->value,column[2]->suit,
-           column[3]->value,column[3]->suit,
-           column[4]->value,column[4]->suit,
-           column[5]->value,column[5]->suit,
-           column[6]->value,column[6]->suit);
-}
-*/
-    // LAYOUT
-    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n");
-    printf("\n");
-    /*
-    printf("%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t\t\t[]\tF1\n",
-           column[0].value,column[0].suit,
-           column[1].value,column[1].suit,
-           column[2].value,column[2].suit,
-           column[3]->value,column[3].suit,
-           column[4]->value,column[4]->suit,
-           column[5]->value,column[5]->suit,
-           column[6]->value,column[6]->suit);
-    printf("%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t\t\t\t\n",
-           column[0]->value,column[0]->suit,
-           (column[1]->next)->value,(column[1]->next)->suit,
-           column[2]->value,column[2]->suit,
-           column[3]->value,column[3]->suit,
-           column[4]->value,column[4]->suit,
-           column[5]->value,column[5]->suit,
-           column[6]->value,column[6]->suit);
-           */
-    printf("\t\t\t\t\t\t\t\t\t[]\tF2\n");
-    printf("\n");
-    printf("\t\t\t\t\t\t\t\t\t[]\tF3\n");
-    printf("\n");
-    printf("\t\t\t\t\t\t\t\t\t[]\tF4\n");
-
+    printGameState(column);
 
 
 
