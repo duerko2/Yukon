@@ -1,59 +1,79 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //value 1-13?
-enum value{
-    value_Ace,value_2,value_3,value_4,value_5,value_6,value_7,value_8,value_9,value_10,value_Jack,value_Queen,value_King
-};
 
-enum suit {
-    S,H,D,C
-};
 
 typedef struct card {
-    int value;
-    int suit;
+    char value[3];
+    char suit[2];
     struct card *next;
 } Card;
 
-Card * createCard(int value,int suit){
+Card * createCard(char *value,char *suit){
     Card * newCard;
 
     newCard = (Card*)malloc(sizeof (Card));
 
-    newCard->suit=suit;
-    newCard->value=value;
+    strcpy(newCard->value, value);
+    strcpy(newCard->suit, suit);
+
 
     newCard->next = NULL;
 
     return newCard;
 }
 
-int main() {
+void printCardList(Card *list) {
+// list points to the head of a linked list of Flights
+    int count = 1;
+    printf("Deck---------------------\n");
+    while (list != NULL) { // while not at the end
+        char *value = list->value;
+        char *suit = list->suit;
+        printf("Card%d: %s%s\n",count,value,suit);
 
-Card *deck= NULL;
-Card *column1 = NULL;
-Card *column2 = NULL;
-Card *column3 = NULL;
-Card *column4 = NULL;
-Card *column5 = NULL;
-Card *column6 = NULL;
-Card *column7 = NULL;
-
-for(int i=0;i<4;i++){
-    Card *temp;
-
-    for(int j=12;j>=0;j--){
-        temp=createCard(i,j);
-        temp->next = deck;
-        deck=temp;
+// etc. etc.
+        count = count + 1;
+        list = list->next; // move to next node
     }
+    printf("\n\n");
 }
 
+Card * createDeck(){
+    Card *deck= NULL;
+
+    char suits[4][2] = {"S","H","D","C"};
+    char values[13][3] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+
+    for(int i=0;i<4;i++){
+        Card *temp;
+
+        for(int j=12;j>=0;j--){
+            temp=createCard(values+j,suits+i);
+            temp->next = deck;
+            deck=temp;
+        }
+    }
+    return deck;
+}
+
+
+
+int main() {
+
+
+Card *deck = createDeck();
+
+
+
+/*
 Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
 
 int columnValues[] = {1,6,7,8,9,10,11};
+
     Card *currentCard = deck;
 
 for(int i=0;i<52;i++){
@@ -62,9 +82,11 @@ for(int i=0;i<52;i++){
 
     }
 }
+ */
 
 
 
+    printCardList(deck);
 
 
 
