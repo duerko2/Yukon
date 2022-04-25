@@ -76,13 +76,41 @@ Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
 int columnValues[] = {1,6,7,8,9,10,11};
 
-Card *currentCard = deck;
+Card * currentCard = (Card*)malloc(sizeof (Card));
+
+currentCard = deck;
+for(int i=0;i<52;i++) {
+    for (int j = 0; j < 7; j++) {
+        int allowedAmountOfCards = columnValues[j];
+        int currentIndex = 0;
+
+
+        Card *currentPlacement = column[j];
+
+
+        while (currentPlacement != NULL && currentIndex < allowedAmountOfCards) {
+            currentPlacement = currentPlacement->next;
+            currentIndex++;
+        }
+        if(currentIndex<allowedAmountOfCards) {
+            currentPlacement = createCard(currentCard->value, currentCard->suit);
+            currentPlacement->next = column[j];
+            column[j] = currentPlacement;
+
+
+            currentCard = currentCard->next;
+        }
+    }
+}
+
+
+
+
+
 
 for(int i=0;i<7;i++){
     column[i]=currentCard;
     for(int j=0;j<columnValues[i];i++){
-        column[]
-
 
     }
 }
