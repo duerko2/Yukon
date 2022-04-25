@@ -50,6 +50,8 @@ Card * createDeck(){
     for(int i=0;i<4;i++){
         Card *temp;
 
+
+
         for(int j=12;j>=0;j--){
             temp=createCard(values+j,suits+i);
             temp->next = deck;
@@ -68,21 +70,23 @@ Card *deck = createDeck();
 
 
 
-/*
+
 Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
 
 int columnValues[] = {1,6,7,8,9,10,11};
 
-    Card *currentCard = deck;
+Card *currentCard = deck;
 
-for(int i=0;i<52;i++){
-    for(int j=0;j<7;i++){
+for(int i=0;i<7;i++){
+    column[i]=currentCard;
+    for(int j=0;j<columnValues[i];i++){
+        column[]
 
 
     }
 }
- */
+
 
 
 
