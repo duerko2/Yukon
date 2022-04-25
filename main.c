@@ -62,56 +62,53 @@ Card * createDeck(){
 }
 
 
-// Not working atm. Can't return arrays.
-/*
-Card* dealCards(Card *deck){
-Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+
+void dealCards(Card *deck,Card *column[7]){
 
 
-int columnValues[] = {1,6,7,8,9,10,11};
+    int columnValues[] = {1,6,7,8,9,10,11};
 
-Card * currentCard = (Card*)malloc(sizeof (Card));
+    Card * currentCard = (Card*)malloc(sizeof (Card));
 
-currentCard = deck;
-for(int i=0;i<52;i++) {
-for (int j = 0; j < 7; j++) {
-int allowedAmountOfCards = columnValues[j];
-int currentIndex = 0;
-
-
-Card *currentPlacement = column[j];
+    currentCard = deck;
+    for(int i=0;i<52;i++) {
+        for (int j = 0; j < 7; j++) {
+            int allowedAmountOfCards = columnValues[j];
+            int currentIndex = 0;
 
 
-while (currentPlacement != NULL && currentIndex < allowedAmountOfCards) {
-currentPlacement = currentPlacement->next;
-currentIndex++;
+            Card *currentPlacement = column[j];
+
+
+            while (currentPlacement != NULL && currentIndex < allowedAmountOfCards) {
+                currentPlacement = currentPlacement->next;
+                currentIndex++;
+            }
+            if(currentIndex<allowedAmountOfCards) {
+                currentPlacement = createCard(currentCard->value, currentCard->suit);
+                currentPlacement->next = column[j];
+                column[j] = currentPlacement;
+
+
+            currentCard = currentCard->next;
+            }
+        }
+    }
 }
-if(currentIndex<allowedAmountOfCards) {
-currentPlacement = createCard(currentCard->value, currentCard->suit);
-currentPlacement->next = column[j];
-column[j] = currentPlacement;
 
-
-currentCard = currentCard->next;
-}
-}
-}
-
-Card **arrayPointer=column;
-
-return column;
-}
-*/
 
 
 int main() {
 
 
 Card *deck = createDeck();
+Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+dealCards(deck,column);
 
 
 
 
+/*
 Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
 
@@ -120,7 +117,7 @@ int columnValues[] = {1,6,7,8,9,10,11};
 Card * currentCard = (Card*)malloc(sizeof (Card));
 
 currentCard = deck;
-for(int i=0;i<52;i++) {
+for(int i=0;i<11;i++) {
     for (int j = 0; j < 7; j++) {
         int allowedAmountOfCards = columnValues[j];
         int currentIndex = 0;
@@ -143,6 +140,7 @@ for(int i=0;i<52;i++) {
         }
     }
 }
+*/
 
 
 
@@ -158,14 +156,46 @@ for(int i=0;i<52;i++) {
 
 
 
+/*
+printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
+for(int i=0;i<13;i++){
+    Card * currentCard = column[i];
+    for(int j=13-i;j<13;){
 
+    }
 
+    printf("%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t\t\t[]\tF1\n",
+           column[0]->value,column[0]->suit,
+           column[1]->value,column[1]->suit,
+           column[2]->value,column[2]->suit,
+           column[3]->value,column[3]->suit,
+           column[4]->value,column[4]->suit,
+           column[5]->value,column[5]->suit,
+           column[6]->value,column[6]->suit);
+}
+*/
     // LAYOUT
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n");
     printf("\n");
-    printf("K2\t[]\t\t\t\t\t\t\t\t[]\tF1\n");
-    printf("\n");
-    printf("\tK2\t\t\t\t\t\t\t\t[]\tF2\n");
+    /*
+    printf("%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t\t\t[]\tF1\n",
+           column[0].value,column[0].suit,
+           column[1].value,column[1].suit,
+           column[2].value,column[2].suit,
+           column[3]->value,column[3].suit,
+           column[4]->value,column[4]->suit,
+           column[5]->value,column[5]->suit,
+           column[6]->value,column[6]->suit);
+    printf("%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t%s%s\t\t\t\t\n",
+           column[0]->value,column[0]->suit,
+           (column[1]->next)->value,(column[1]->next)->suit,
+           column[2]->value,column[2]->suit,
+           column[3]->value,column[3]->suit,
+           column[4]->value,column[4]->suit,
+           column[5]->value,column[5]->suit,
+           column[6]->value,column[6]->suit);
+           */
+    printf("\t\t\t\t\t\t\t\t\t[]\tF2\n");
     printf("\n");
     printf("\t\t\t\t\t\t\t\t\t[]\tF3\n");
     printf("\n");
