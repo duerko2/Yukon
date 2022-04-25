@@ -31,19 +31,37 @@ Card * createCard(int value,int suit){
 
 int main() {
 
-Card *list= NULL;
-
+Card *deck= NULL;
+Card *column1 = NULL;
+Card *column2 = NULL;
+Card *column3 = NULL;
+Card *column4 = NULL;
+Card *column5 = NULL;
+Card *column6 = NULL;
+Card *column7 = NULL;
 
 for(int i=0;i<4;i++){
     Card *temp;
 
     for(int j=12;j>=0;j--){
         temp=createCard(i,j);
-        temp->next = list;
-        list=temp;
+        temp->next = deck;
+        deck=temp;
     }
 }
 
+Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+
+
+int columnValues = {1,6,7,8,9,10,11};
+    Card *currentCard = deck;
+
+for(int i=0;i<52;i++){
+    for(int j=0;j<7;i++){
+
+
+    }
+}
 
 
 
