@@ -53,7 +53,7 @@ for(int i=0;i<4;i++){
 Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
 
-int columnValues = {1,6,7,8,9,10,11};
+int columnValues[] = {1,6,7,8,9,10,11};
     Card *currentCard = deck;
 
 for(int i=0;i<52;i++){
