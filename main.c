@@ -68,6 +68,22 @@ Card * createDeck(){
     return deck;
 }
 
+void reverseList(Card** head_ref)
+{
+    Card* prev   = NULL;
+    Card* current = *head_ref;
+    Card* next;
+    while (current != NULL)
+    {
+        next  = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    *head_ref = prev;
+}
+
+
 
 // Works.
 // Deals the cards from the deck into linked lists representing the columns.
@@ -123,20 +139,30 @@ Card * extractLast(Card card){
 void printGameState(Card * column[]){
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
 
+    Card * previousCard;
+
     for(int j=0;j<13;j++) {
         for (int i = 0; i < 7; i++) {
             Card * currentCard=column[i];
-            int count=0;
-            while(currentCard->next!=NULL){
-                currentCard=currentCard->next;
-                count++;
+
+            if(currentCard==NULL){
+                printf("\t");
+            } else {
+                while (currentCard->next != NULL) {
+                    previousCard = currentCard;
+                    currentCard = currentCard->next;
+                }
+
+                printf("%s%s\t", currentCard->value, currentCard->suit);
+
+                if(currentCard->next==NULL){
+                    column[i]=NULL;
+                } else{
+                    previousCard->next=NULL;
+                }
             }
 
-            if(currentCard!=NULL){
-                printf("%s%s\t", currentCard->value, currentCard->suit);
-            } else{
-                printf("\t");
-            }
+
 
 
 
@@ -154,6 +180,10 @@ int main() {
     dealCards(deck,column);
     printCardList(deck);
     printGameState(column);
+
+    for(int i=0;i<7;i++){
+        reverseList(&column[i]);
+    }
 
 
 
