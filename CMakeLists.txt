@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
-project(untitled1 C)
+project(Yukon C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(untitled1 main.c)
+add_executable(Yukon main.c)
