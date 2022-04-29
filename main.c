@@ -148,43 +148,44 @@ void printGameState(Card * column[]){
             if(currentCard==NULL){
                 printf("\t");
             } else {
-                while (currentCard->next != NULL) {
-                    previousCard = currentCard;
-                    currentCard = currentCard->next;
+                for(int l=0;l<j;l++) {
+                    if(currentCard!=NULL) {
+                        currentCard = currentCard->next;
+                    }
                 }
-
-                printf("%s%s\t", currentCard->value, currentCard->suit);
-
-                if(currentCard->next==NULL){
-                    column[i]=NULL;
+                if(currentCard==NULL){
+                    printf("\t");
                 } else{
-                    previousCard->next=NULL;
+                    printf("%s%s\t", currentCard->value, currentCard->suit);
                 }
             }
-
-
-
-
-
         }
         printf("\n");
     }
-
 }
 
 
 
 int main() {
-    Card *deck = createDeck();
-    Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
-    dealCards(deck,column);
-    printCardList(deck);
-    printGameState(column);
+
+
+    Card *deck = createDeck(); //Pointer to top card of deck
+    Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL}; // Pointer to array of linked lists representing the 7 columns in the game.
+
+
+    dealCards(deck,column); // Deals the cards form the deck into the columns.
+
+
+    printCardList(deck); // Prints the entire deck starting from top card.
+
+
+
 
     for(int i=0;i<7;i++){
         reverseList(&column[i]);
-    }
+    } // Reverses the columns, for easier use in printGameState function.
 
+    printGameState(column);
 
 
     return 0;
