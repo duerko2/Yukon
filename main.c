@@ -160,6 +160,9 @@ void printGameState(Card * column[]){
                 }
             }
         }
+        if(j%2==0 && j<7){
+            printf("\t[ ]");
+        }
         printf("\n");
     }
 }
