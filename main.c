@@ -217,7 +217,61 @@ void makeHidden(Card * column[]){
     }
 }
 
+void startStartupPhase() {
+    Card *deck;
+    Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+    Card * foundation[] = {NULL,NULL,NULL,NULL};
+    char str1[2];
+    char str2[20];
+    while (true) {
+        scanf("%2s",str1);
+
+        fscanf(,"%s", str2);
+
+        switch(str1[0]+str1[1]) {
+            case 'S'+'W':
+                dealCards(deck, column);
+                for (int i = 0; i <
+                                7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
+                    reverseList(
+                            &column[i]);                       // Alternatively we could have made the linked lists double..
+                }
+                makeHidden(column);
+                printGameState(column);
+                break;
+
+            case 'L'+'D':
+                if (str2[0]== '<') {
+                    //deck =
+                } else {
+                    deck = createDeck();
+                }
+                break;
+
+            case 'S'+'R':
+                //shuffle
+                break;
+
+            case 'Q'+'Q':
+                exit(0);
+            case 'P':
+
+                break;
+
+
+            default:
+                printf("Dette er ikke en kommando.");
+
+        }
+    }
+}
+
+
 int main() {
+
+    startStartupPhase();
+
+
     Card *deck = createDeck();                                  //Pointer to top card of deck
 
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};     // Pointer to array of linked lists representing the 7 columns in the game.
