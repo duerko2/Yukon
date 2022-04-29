@@ -162,10 +162,10 @@ Card * extractLast(Card card){
 void printGameState(Card * column[]){
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
 
-    Card * previousCard;
-
-    for(int j=0;j<13;j++) {
-
+    for(int j=0;j<52;j++) {
+        bool finished=true;                                     // @finished Helps us keep track of the columns.
+                                                                // Should switch to false if there are still cards needing to be shown in the columns.
+                                                                // Will remain true if all cards have been shown.
         for (int i = 0; i < 7; i++) {
             Card * currentCard=column[i];
 
@@ -183,7 +183,7 @@ void printGameState(Card * column[]){
                     if(!currentCard->hidden){
                         printf("%s%s\t", currentCard->value, currentCard->suit);
                     } else{printf("[]\t");}
-
+                    finished=false;                             // @finished Will switch to false if there was a card
                 }
             }
         }
@@ -191,6 +191,11 @@ void printGameState(Card * column[]){
             printf("\t[ ]");
         }
         printf("\n");
+
+
+        if(j>6&&finished){                                      // All the cards have been printed and we now stop printing.
+            return;
+        }
     }
 }
 void makeHidden(Card * column[]){
@@ -211,10 +216,6 @@ void makeHidden(Card * column[]){
         }
     }
 }
-
-
-
-
 
 int main() {
     Card *deck = createDeck();                                  //Pointer to top card of deck
