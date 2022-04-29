@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 //value 1-13?
 
@@ -8,6 +9,7 @@
 typedef struct card {
     char value[3];
     char suit[2];
+    bool hidden;
     struct card *next;
 } Card;
 
@@ -26,6 +28,7 @@ Card * createCard(char *value,char *suit){
 
     strcpy(newCard->value, value);
     strcpy(newCard->suit, suit);
+    newCard->hidden=false;
 
 
     newCard->next = NULL;
@@ -162,6 +165,7 @@ void printGameState(Card * column[]){
     Card * previousCard;
 
     for(int j=0;j<13;j++) {
+
         for (int i = 0; i < 7; i++) {
             Card * currentCard=column[i];
 
@@ -176,7 +180,10 @@ void printGameState(Card * column[]){
                 if(currentCard==NULL){
                     printf("\t");
                 } else{
-                    printf("%s%s\t", currentCard->value, currentCard->suit);
+                    if(!currentCard->hidden){
+                        printf("%s%s\t", currentCard->value, currentCard->suit);
+                    } else{printf("[]\t");}
+
                 }
             }
         }
@@ -186,6 +193,26 @@ void printGameState(Card * column[]){
         printf("\n");
     }
 }
+void makeHidden(Card * column[]){
+    int amountOfHidden[] = {0,1,2,3,4,5,6};
+
+    for(int i=0;i<52;i++) {
+        for (int j = 0; j < 7; j++) {
+            int allowedAmountOfCards = amountOfHidden[j];
+            int currentIndex = 0;
+            Card *currentPlacement = column[j];
+
+
+            while (currentPlacement != NULL && currentIndex < allowedAmountOfCards) {
+                currentPlacement->hidden=true;
+                currentPlacement = currentPlacement->next;
+                currentIndex++;
+            }
+        }
+    }
+}
+
+
 
 
 
@@ -193,7 +220,6 @@ int main() {
     Card *deck = createDeck();                                  //Pointer to top card of deck
 
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};     // Pointer to array of linked lists representing the 7 columns in the game.
-                                                                // TODO: Add functionality, so the correct cards are initalized as "hidden".
 
     Card * foundation[] = {NULL,NULL,NULL,NULL};                // Pointer to array of linked lists representing the 4 foundation columns.
 
@@ -203,10 +229,9 @@ int main() {
 
     for(int i=0;i<7;i++){                                       // Reverses the 7 columns, so top card is at beginning of list.
         reverseList(&column[i]);                       // Alternatively we could have made the linked lists double..
-
     }
-
-    printGameState(column);                                     // Prints the game board. TODO: Add functionality, so hidden cards are not printed.
+    makeHidden(column);
+    printGameState(column);                                     // Prints the game board
 
 
     return 0;
