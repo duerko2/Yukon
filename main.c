@@ -4,16 +4,21 @@
 
 //value 1-13?
 
-
+// Structure for card
 typedef struct card {
     char value[3];
     char suit[2];
     struct card *next;
 } Card;
 
-//Works
-// Creates a struct of type Card. Holds the suit and value.
-// TODO: The struct also needs to hold a boolean representing if the card is face up or face down.
+
+/**
+ * Creates a struct of type Card. Holds the suit and value.
+ * TODO: The struct also needs to hold a boolean representing if the card is face up or face down.
+ * @param value
+ * @param suit
+ * @return
+ */
 Card * createCard(char *value,char *suit){
     Card * newCard;
 
@@ -28,8 +33,11 @@ Card * createCard(char *value,char *suit){
     return newCard;
 }
 
-// Works
-// Prints out the entire deck.
+
+/**
+ * Prints out the entire deck.
+ * @param list
+ */
 void printCardList(Card *list) {
 // list points to the head of a linked list of Flights
     int count = 1;
@@ -46,8 +54,11 @@ void printCardList(Card *list) {
     printf("\n\n");
 }
 
-// Works.
-// Creates a linked list representing a unshuffled deck.
+
+/**
+ * Creates a linked list representing a unshuffled deck.
+ * @return
+ */
 Card * createDeck(){
     Card *deck= NULL;
 
@@ -68,6 +79,10 @@ Card * createDeck(){
     return deck;
 }
 
+/**
+ * Reverses a single linked list
+ * @param head_ref Pointer to head of linked list.
+ */
 void reverseList(Card** head_ref)
 {
     Card* prev   = NULL;
@@ -84,9 +99,11 @@ void reverseList(Card** head_ref)
 }
 
 
-
-// Works.
-// Deals the cards from the deck into linked lists representing the columns.
+/**
+ * Deals the cards from the deck into linked lists representing the columns.
+ * @param deck The deck of cards represented as single linked list
+ * @param column The array of linked lists.
+ */
 void dealCards(Card *deck,Card *column[]){
 
 
@@ -134,8 +151,11 @@ Card * extractLast(Card card){
      */
 }
 
-// Doesn't work
-// Prints out the game state. Should be called after each input and action.
+
+/**
+ * Prints out the game state. Should be called after each input and action.
+ * @param column is the pointer to the array of linked lists containing the 7 columns of the game.
+ */
 void printGameState(Card * column[]){
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
 
@@ -170,25 +190,23 @@ void printGameState(Card * column[]){
 
 
 int main() {
+    Card *deck = createDeck();                                  //Pointer to top card of deck
 
+    Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};     // Pointer to array of linked lists representing the 7 columns in the game.
+                                                                // TODO: Add functionality, so the correct cards are initalized as "hidden".
 
-    Card *deck = createDeck(); //Pointer to top card of deck
-    Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL}; // Pointer to array of linked lists representing the 7 columns in the game.
+    Card * foundation[] = {NULL,NULL,NULL,NULL};                // Pointer to array of linked lists representing the 4 foundation columns.
 
+    dealCards(deck,column);                                     // Deals the cards form the deck into the columns.
 
-    dealCards(deck,column); // Deals the cards form the deck into the columns.
+    printCardList(deck);                                    // Prints the entire deck starting from top card.
 
+    for(int i=0;i<7;i++){                                       // Reverses the 7 columns, so top card is at beginning of list.
+        reverseList(&column[i]);                       // Alternatively we could have made the linked lists double..
 
-    printCardList(deck); // Prints the entire deck starting from top card.
+    }
 
-
-
-
-    for(int i=0;i<7;i++){
-        reverseList(&column[i]);
-    } // Reverses the columns, for easier use in printGameState function.
-
-    printGameState(column);
+    printGameState(column);                                     // Prints the game board. TODO: Add functionality, so hidden cards are not printed.
 
 
     return 0;
