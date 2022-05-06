@@ -108,34 +108,40 @@ int random(){
 
 // NOT WORKING YET
 
-Card * shuffleDeck(Card** head_ref){
+Card * shuffleDeck(Card* head_ref){
 
     Card *shuffledeck = NULL;
 
-    Card* prev = NULL;
-    Card* current = *head_ref;
+    Card* current = head_ref;
     Card* next;
+    Card* temp;
 
+    shuffledeck = current;
+    current=current->next;
+    shuffledeck->next=shuffledeck;
 
-
-    for (int i=0;i<52;i++){
-
-        if (shuffledeck == NULL){
-            shuffledeck = current;
-            current=current->next;
-            shuffledeck->next=shuffledeck;
-        }
+    for (int i=0;i<51;i++){
 
         int ran = random();
 
-        current = current -> next;
-
+        //current = current -> next;
 
         for (int k=0; k < ran; k++){
             shuffledeck = shuffledeck->next;
         }
+        temp = current -> next;
+        current -> next = shuffledeck -> next;
+        shuffledeck -> next = current;
+        current = temp;
 
     }
+
+    temp = shuffledeck;
+
+    for (int o = 0; o < 51; o++){
+        temp = temp->next;
+    }
+    temp -> next = NULL;
 
     return shuffledeck;
 }
@@ -342,11 +348,13 @@ void startStartupPhase() {
 
 int main() {
 
-
-    startStartupPhase();
-
-
     Card *deck = createDeck();                                  //Pointer to top card of deck
+
+    deck = shuffleDeck(deck);
+
+    printCardList(deck);
+
+    /*
 
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};     // Pointer to array of linked lists representing the 7 columns in the game.
 
@@ -361,7 +369,9 @@ int main() {
     }
     makeHidden(column);
     printGameState(column);                                     // Prints the game board
-
+*/
 
     return 0;
+
+
 }
