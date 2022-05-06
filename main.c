@@ -84,44 +84,6 @@ Card * createDeck(){
 }
 
 /**
- * Creates a random number
- * @return
- */
-
-int random(){
-
-
-    srand(time(0));
-    int l = 0;
-    int u = 9999;
-
-        int num = (rand() % (u - l + 1)) + l;
-        return num;
-
-}
-
-
-/**
- * Shuffle a card deck into a new linked list which will be the new deck in a random order.
- * @return
- */
-
-Card * shuffleDeck(Card** head_ref){
-    Card *shuffledeck= NULL;
-
-    Card* current = *head_ref;
-    Card* next;
-
-
-    for (int i=0;i<52;i++){
-        next  = current->next;
-        current = next;
-    }
-
-    return shuffledeck;
-}
-
-/**
  * Reverses a single linked list
  * @param head_ref Pointer to head of linked list.
  */
@@ -256,7 +218,76 @@ void makeHidden(Card * column[]){
     }
 }
 
+void startStartupPhase() {
+    Card *deck;
+    Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+    Card * foundation[] = {NULL,NULL,NULL,NULL};
+    char str1[20];
+    while (true) {
+        scanf("%20s",str1);
+
+        switch(str1[0]+str1[1]) {
+            case 'S'+'W':
+                dealCards(deck, column);
+                for (int i = 0; i <
+                                7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
+                    reverseList(
+                            &column[i]);                       // Alternatively we could have made the linked lists double..
+                }
+                makeHidden(column);
+                printGameState(column);
+                break;
+
+            case 'L'+'D':
+                if (str1[2]== '<') {
+                    int i =3;
+                    int j =0;
+                    char str2[15];
+                    while (str1[i]!='>'){
+                       str2[j]= str1[i];
+                       i++,j++;
+                    }
+                    printf("%s",str2);
+                } else {
+                    deck = createDeck();
+                }
+                break;
+
+            case 'S'+'R':
+                //shuffle
+                break;
+
+            case 'Q'+'Q':
+                exit(0);
+            case 'P':
+
+                if (deck == NULL){
+                    dealCards(deck, column);
+                    for (int i = 0; i <
+                                    7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
+                        reverseList(
+                                &column[i]);                       // Alternatively we could have made the linked lists double..
+                    }
+                    makeHidden(column);
+                }
+                //startPlayPhase;
+                false;
+                break;
+
+
+            default:
+                printf("Dette er ikke en kommando.");
+
+        }
+    }
+}
+
+
 int main() {
+
+
+    startStartupPhase();
+
 
     Card *deck = createDeck();                                  //Pointer to top card of deck
 
