@@ -223,19 +223,25 @@ void startStartupPhase() {
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     Card * foundation[] = {NULL,NULL,NULL,NULL};
     char str1[20];
+    printf("You're in startup phase" "\n");
     while (true) {
+        printf("Write input in console""\n");
         scanf("%20s",str1);
 
         switch(str1[0]+str1[1]) {
             case 'S'+'W':
-                dealCards(deck, column);
-                for (int i = 0; i <
-                                7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
-                    reverseList(
-                            &column[i]);                       // Alternatively we could have made the linked lists double..
+                if (deck != NULL) {
+                    dealCards(deck, column);
+                    for (int i = 0; i <
+                                    7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
+                        reverseList(
+                                &column[i]);                       // Alternatively we could have made the linked lists double..
+                    }
+                    makeHidden(column);
+                    printGameState(column);
+                }else {
+                    printf("No deck loaded");
                 }
-                makeHidden(column);
-                printGameState(column);
                 break;
 
             case 'L'+'D':
@@ -247,7 +253,7 @@ void startStartupPhase() {
                        str2[j]= str1[i];
                        i++,j++;
                     }
-                    printf("%s",str2);
+                    printf("Not implemented yet""\n");
                 } else {
                     deck = createDeck();
                 }
@@ -276,7 +282,7 @@ void startStartupPhase() {
 
 
             default:
-                printf("Dette er ikke en kommando.");
+                printf("Dette er ikke en kommando.""\n");
 
         }
     }
@@ -284,7 +290,6 @@ void startStartupPhase() {
 
 
 int main() {
-
 
     startStartupPhase();
 
