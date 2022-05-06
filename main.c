@@ -221,12 +221,9 @@ void startStartupPhase() {
     Card *deck;
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     Card * foundation[] = {NULL,NULL,NULL,NULL};
-    char str1[2];
-    char str2[20];
+    char str1[20];
     while (true) {
         scanf("%2s",str1);
-
-        fscanf(,"%s", str2);
 
         switch(str1[0]+str1[1]) {
             case 'S'+'W':
@@ -241,8 +238,14 @@ void startStartupPhase() {
                 break;
 
             case 'L'+'D':
-                if (str2[0]== '<') {
-                    //deck =
+                if (str1[2]== '<') {
+                    int i =3;
+                    int j =0;
+                    char str2[15];
+                    while (str1[i]!='>'){
+                       str2[j]= str1[i];
+                       i++,j++;
+                    }
                 } else {
                     deck = createDeck();
                 }
@@ -255,7 +258,8 @@ void startStartupPhase() {
             case 'Q'+'Q':
                 exit(0);
             case 'P':
-
+                //startPlayPhase;
+                false;
                 break;
 
 
