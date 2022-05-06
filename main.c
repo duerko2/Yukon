@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include<time.h>
 
 //value 1-13?
 
@@ -80,6 +81,44 @@ Card * createDeck(){
         }
     }
     return deck;
+}
+
+/**
+ * Creates a random number
+ * @return
+ */
+
+int random(){
+
+
+    srand(time(0));
+    int l = 0;
+    int u = 9999;
+
+        int num = (rand() % (u - l + 1)) + l;
+        return num;
+
+}
+
+
+/**
+ * Shuffle a card deck into a new linked list which will be the new deck in a random order.
+ * @return
+ */
+
+Card * shuffleDeck(Card** head_ref){
+    Card *shuffledeck= NULL;
+
+    Card* current = *head_ref;
+    Card* next;
+
+
+    for (int i=0;i<52;i++){
+        next  = current->next;
+        current = next;
+    }
+
+    return shuffledeck;
 }
 
 /**
@@ -218,6 +257,7 @@ void makeHidden(Card * column[]){
 }
 
 int main() {
+
     Card *deck = createDeck();                                  //Pointer to top card of deck
 
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};     // Pointer to array of linked lists representing the 7 columns in the game.
