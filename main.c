@@ -84,6 +84,69 @@ Card * createDeck(){
 }
 
 /**
+ * Creates a random number
+ * @return
+ */
+
+int random(){
+
+
+    srand(time(0));
+    int l = 0;
+    int u = 9999;
+
+        int num = (rand() % (u - l + 1)) + l;
+        return num;
+
+}
+
+
+/**
+ * Shuffle a card deck into a new linked list which will be the new deck in a random order.
+ * @return
+ */
+
+// NOT WORKING YET
+
+Card * shuffleDeck(Card* head_ref){
+
+    Card *shuffledeck = NULL;
+
+    Card* current = head_ref;
+    Card* next;
+    Card* temp;
+
+    shuffledeck = current;
+    current=current->next;
+    shuffledeck->next=shuffledeck;
+
+    for (int i=0;i<51;i++){
+
+        int ran = random();
+
+        //current = current -> next;
+
+        for (int k=0; k < ran; k++){
+            shuffledeck = shuffledeck->next;
+        }
+        temp = current -> next;
+        current -> next = shuffledeck -> next;
+        shuffledeck -> next = current;
+        current = temp;
+
+    }
+
+    temp = shuffledeck;
+
+    for (int o = 0; o < 51; o++){
+        temp = temp->next;
+    }
+    temp -> next = NULL;
+
+    return shuffledeck;
+}
+
+/**
  * Reverses a single linked list
  * @param head_ref Pointer to head of linked list.
  */
@@ -223,25 +286,19 @@ void startStartupPhase() {
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     Card * foundation[] = {NULL,NULL,NULL,NULL};
     char str1[20];
-    printf("You're in startup phase" "\n");
     while (true) {
-        printf("Write input in console""\n");
         scanf("%20s",str1);
 
         switch(str1[0]+str1[1]) {
             case 'S'+'W':
-                if (deck != NULL) {
-                    dealCards(deck, column);
-                    for (int i = 0; i <
-                                    7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
-                        reverseList(
-                                &column[i]);                       // Alternatively we could have made the linked lists double..
-                    }
-                    makeHidden(column);
-                    printGameState(column);
-                }else {
-                    printf("No deck loaded");
+                dealCards(deck, column);
+                for (int i = 0; i <
+                                7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
+                    reverseList(
+                            &column[i]);                       // Alternatively we could have made the linked lists double..
                 }
+                makeHidden(column);
+                printGameState(column);
                 break;
 
             case 'L'+'D':
@@ -253,7 +310,7 @@ void startStartupPhase() {
                        str2[j]= str1[i];
                        i++,j++;
                     }
-                    printf("Not implemented yet""\n");
+                    printf("%s",str2);
                 } else {
                     deck = createDeck();
                 }
@@ -282,7 +339,7 @@ void startStartupPhase() {
 
 
             default:
-                printf("Dette er ikke en kommando.""\n");
+                printf("Dette er ikke en kommando.");
 
         }
     }
@@ -312,4 +369,6 @@ int main() {
 
 
     return 0;
+
+
 }
