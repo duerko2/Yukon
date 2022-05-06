@@ -84,6 +84,63 @@ Card * createDeck(){
 }
 
 /**
+ * Creates a random number
+ * @return
+ */
+
+int random(){
+
+
+    srand(time(0));
+    int l = 0;
+    int u = 9999;
+
+        int num = (rand() % (u - l + 1)) + l;
+        return num;
+
+}
+
+
+/**
+ * Shuffle a card deck into a new linked list which will be the new deck in a random order.
+ * @return
+ */
+
+// NOT WORKING YET
+
+Card * shuffleDeck(Card** head_ref){
+
+    Card *shuffledeck = NULL;
+
+    Card* prev = NULL;
+    Card* current = *head_ref;
+    Card* next;
+
+
+
+    for (int i=0;i<52;i++){
+
+        if (shuffledeck == NULL){
+            shuffledeck = current;
+            current=current->next;
+            shuffledeck->next=shuffledeck;
+        }
+
+        int ran = random();
+
+        current = current -> next;
+
+
+        for (int k=0; k < ran; k++){
+            shuffledeck = shuffledeck->next;
+        }
+
+    }
+
+    return shuffledeck;
+}
+
+/**
  * Reverses a single linked list
  * @param head_ref Pointer to head of linked list.
  */
