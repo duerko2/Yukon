@@ -251,25 +251,39 @@ void startPlayPhase(Card* deck, Card *column[]){
             case 'S':
                 break;
             default:
+                if (input[3]=0){
+                    selectedColumn[0]=input[0];
+                    selectedColumn[1]=input[1];
+
+                    selectedSourceCardValue[0]=input[2];
+                    selectedSourceCardValue[1]=input[3];
+                    selectedSourceCardValue[2]='\0';
+
+                    selectedSourceCardSuit[0]=input[4];
+                    selectedSourceCardSuit[1]='\0';
+
+                    destinationColumn[0]=input[8];
+                    destinationColumn[1]=input[9];
+                }
+                else{
                 selectedColumn[0]=input[0];
                 selectedColumn[1]=input[1];
 
                 selectedSourceCardValue[0]=input[2];
-                selectedSourceCardValue[1]=input[3];
-                selectedSourceCardValue[2]='\0';
+                selectedSourceCardValue[1]='\0';
 
-                selectedSourceCardSuit[0]=input[4];
+                selectedSourceCardSuit[0]=input[3];
                 selectedSourceCardSuit[1]='\0';
 
-                destinationColumn[0]=input[8];
-                destinationColumn[1]=input[9];
+                destinationColumn[0]=input[7];
+                destinationColumn[1]=input[8];
 
                        // Example input "C210D : C3"
                        // Example input "C34C : F2"
                        // Example input "C5KH : C1"
-                       // TODO: Be able to handle both double digit value and single digit value...
                        // TODO: Handle wrong input here!
 
+                }
                 gameMove(column,foundation,selectedColumn,selectedSourceCardValue,selectedSourceCardSuit,destinationColumn);
                 break;
         }
@@ -277,6 +291,8 @@ void startPlayPhase(Card* deck, Card *column[]){
 }
 
 void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]) {
+
+    printGameState(column);
 
 }
 
