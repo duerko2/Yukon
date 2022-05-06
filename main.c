@@ -92,10 +92,10 @@ int random(){
 
 
     srand(time(0));
-    int lower = 0;
-    int upper = 9999;
+    int l = 0;
+    int u = 9999;
 
-        int num = (rand() % (upper - lower + 1)) + lower;
+        int num = (rand() % (u - l + 1)) + l;
         return num;
 
 }
