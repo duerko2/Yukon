@@ -318,7 +318,7 @@ void startStartupPhase() {
 
             case 'S'+'R':
                 if (deck!= NULL) {
-                    shuffleDeck(deck);
+                    deck = shuffleDeck(deck);
                 }else {
                     printf("There is no deck loaded");
                 }
