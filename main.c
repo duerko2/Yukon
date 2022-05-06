@@ -217,6 +217,24 @@ void makeHidden(Card * column[]){
     }
 }
 
+void startPlayPhase(Card* deck, Card * column[]){
+    Card * foundation[4];
+    dealCards(deck,column);
+    makeHidden(column);
+
+    while(column[1]==NULL && column[2]==NULL){
+        printGameState(column);
+
+        printf("Enter input: ");
+
+
+
+    }
+
+
+
+}
+
 int main() {
     Card *deck = createDeck();                                  //Pointer to top card of deck
 
