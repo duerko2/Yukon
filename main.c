@@ -14,6 +14,10 @@ typedef struct card {
 } Card;
 
 
+void endGame();
+
+void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]);
+
 /**
  * Creates a struct of type Card. Holds the suit and value.
  * TODO: The struct also needs to hold a boolean representing if the card is face up or face down.
@@ -217,21 +221,66 @@ void makeHidden(Card * column[]){
     }
 }
 
-void startPlayPhase(Card* deck, Card * column[]){
+void startPlayPhase(Card* deck, Card *column[]){
     Card * foundation[4];
-    dealCards(deck,column);
-    makeHidden(column);
 
-    while(column[1]==NULL && column[2]==NULL){
+    char input[20];
+    char selectedColumn[2];
+    char selectedSourceCardValue[3];
+    char selectedSourceCardSuit[2];
+    char destinationColumn[2];
+
+
+    while(*column!=NULL && *column+1!=NULL){
         printGameState(column);
 
         printf("Enter input: ");
+        scanf("%s",input);
+        switch(input[0]+input[1]+input[2]){
+            case 'Q'+'Q':
+                endGame();
+                break;
+            case 'Q':
+                break;
+            case 'U':
+                break;
+            case 'R':
+                break;
+            case 'L':
+                break;
+            case 'S':
+                break;
+            default:
+                selectedColumn[0]=input[0];
+                selectedColumn[1]=input[1];
 
+                selectedSourceCardValue[0]=input[2];
+                selectedSourceCardValue[1]=input[3];
+                selectedSourceCardValue[2]='\0';
 
+                selectedSourceCardSuit[0]=input[4];
+                selectedSourceCardSuit[1]='\0';
 
+                destinationColumn[0]=input[8];
+                destinationColumn[1]=input[9];
+
+                       // Example input "C210D : C3"
+                       // Example input "C34C : F2"
+                       // Example input "C5KH : C1"
+                       // TODO: Be able to handle both double digit value and single digit value...
+                       // TODO: Handle wrong input here!
+
+                gameMove(column,foundation,selectedColumn,selectedSourceCardValue,selectedSourceCardSuit,destinationColumn);
+                break;
+        }
     }
+}
 
+void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]) {
 
+}
+
+void endGame() {
 
 }
 
@@ -251,6 +300,8 @@ int main() {
     }
     makeHidden(column);
     printGameState(column);                                     // Prints the game board
+
+    startPlayPhase(deck,column);
 
 
     return 0;
