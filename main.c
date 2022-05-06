@@ -223,7 +223,7 @@ void startStartupPhase() {
     Card * foundation[] = {NULL,NULL,NULL,NULL};
     char str1[20];
     while (true) {
-        scanf("%2s",str1);
+        scanf("%20s",str1);
 
         switch(str1[0]+str1[1]) {
             case 'S'+'W':
@@ -246,6 +246,7 @@ void startStartupPhase() {
                        str2[j]= str1[i];
                        i++,j++;
                     }
+                    printf("%s",str2);
                 } else {
                     deck = createDeck();
                 }
@@ -258,6 +259,16 @@ void startStartupPhase() {
             case 'Q'+'Q':
                 exit(0);
             case 'P':
+
+                if (deck == NULL){
+                    dealCards(deck, column);
+                    for (int i = 0; i <
+                                    7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
+                        reverseList(
+                                &column[i]);                       // Alternatively we could have made the linked lists double..
+                    }
+                    makeHidden(column);
+                }
                 //startPlayPhase;
                 false;
                 break;
