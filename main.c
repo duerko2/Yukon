@@ -27,12 +27,12 @@ typedef struct moveStack {
 MoveStack *moveStack=NULL;
 MoveStack *undoStack=NULL;
 
-void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]);
-void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2]);
+void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2],bool noChecks);
 
 void endGame();
 
 void startPlayPhase(Card* deck, Card *column[]);
+void undoMove(Card ** column, Card **foundation);
 
 /**
  * Creates a struct of type Card. Holds the suit and value.
@@ -404,9 +404,10 @@ void startStartupPhase() {
 
             case 'Q'+'Q':
                 endGame();
+                return;
             case 'P':
 
-                if (deck == NULL){
+                if (*column == NULL){
                     dealCards(deck, column);
                     for (int i = 0; i <
                                     7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
@@ -415,6 +416,7 @@ void startStartupPhase() {
                     }
                     makeHidden(column);
                 }
+
                 startPlayPhase(deck, column);
 
                 break;
@@ -441,13 +443,14 @@ void startPlayPhase(Card* deck, Card *column[]) {
 
         printf("Enter input: ");
         scanf("%19s", input);
-        switch (input[0] + input[1] + input[2]) {
+        switch (input[0] + input[1]) {
             case 'Q' + 'Q':
                 endGame();
                 break;
             case 'Q':
                 break;
             case 'U':
+                undoMove(column,foundation);
                 break;
             case 'R':
                 break;
@@ -491,7 +494,23 @@ void startPlayPhase(Card* deck, Card *column[]) {
 
                 }
                 gameMove(column, foundation, selectedColumn, selectedSourceCardValue, selectedSourceCardSuit,
-                         destinationColumn);
+                         destinationColumn,false);
+
+                // Push move to the move stack.
+                // TODO: Have a check somehow, so that only valid moves, that go through are pushed to the stack.
+
+                char source[3];
+                source[0]=selectedColumn[0];
+                source[1]=selectedColumn[1];
+                source[2]='\0';
+                char dest[3];
+                dest[0]=destinationColumn[0];
+                dest[1]=destinationColumn[1];
+                dest[2]='\0';
+                push(&moveStack,source,dest,selectedSourceCardValue,selectedSourceCardSuit);
+
+                // TODO: Empty undo stack.
+
                 break;
         }
     }
@@ -501,7 +520,7 @@ void endGame() {
     exit(0);
 }
 
-void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2]) {
+void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2], bool noChecks) {
     // laver chars i columns om til ints
     int iselectedColumn = selectedColumn[1] - '0';
     int idestinationColumn = destinationColumn[1] - '0';
@@ -534,7 +553,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
         switch (temp->value[0]) {
             case 'A': {
                 //checks if the currentCard1 value is bigger than currentCard
-                if (currentCard1->value[0] == '2'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                if ((currentCard1->value[0] == '2'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                     //sets currentCard1 pointer to temp
                     currentCard1->next = temp;
                     //sets currentcard pointer to null
@@ -548,8 +567,8 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 break;
             }
             case '1': {
-                if (temp->value[1] == 0) {
-                    if (currentCard1->value[0] == 'J'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                if ((temp->value[1] == '0')||noChecks) {
+                    if ((currentCard1->value[0] == 'J'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -561,7 +580,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '2': {
-                    if (currentCard1->value[0] == '3'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == '3'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -573,7 +592,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '3': {
-                    if (currentCard1->value[0] == '4'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == '4'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -585,7 +604,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '4': {
-                    if (currentCard1->value[0] == '5'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == '5'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -597,7 +616,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '5': {
-                    if (currentCard1->value[0] == '6'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == '6'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -609,7 +628,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '6': {
-                    if (currentCard1->value[0] == '7'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == '7'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -621,7 +640,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '7': {
-                    if (currentCard1->value[0] == '8'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == '8'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -633,7 +652,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '8': {
-                    if (currentCard1->value[0] == '9'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == '9'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -645,7 +664,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '9': {
-                    if (currentCard1->value[0] == '1' && currentCard1->value[1] == 0&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == '1' && currentCard1->value[1] == '0'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -657,7 +676,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case 'J': {
-                    if (currentCard1->value[0] == 'Q'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == 'Q'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -669,7 +688,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case 'Q': {
-                    if (currentCard1->value[0] == 'K'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    if ((currentCard1->value[0] == 'K'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
@@ -681,7 +700,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
                 //todo make sure it works as intended
                 case 'K': {
-                    if (newColumn[destinationColumn[1] - 1] == NULL) {
+                    if (newColumn[destinationColumn[1] - 1] == NULL||noChecks) {
                         newColumn[destinationColumn[1] - 1] = temp;
                         break;
                     } else {
@@ -691,32 +710,29 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
             }
         }
-        } else{
+    } else {
     }
 }
 
-    void undoMove(Card ** column, Card **foundation){
+void undoMove(Card ** column, Card **foundation){
+    char sourceColumn[2];
+    sourceColumn[0]=moveStack->dest[0];
+    sourceColumn[1]=moveStack->dest[1];
+    char * value=moveStack->cardValue;
+    char * suit=moveStack->cardSuit;
+    char destColumn[2];
+    destColumn[0]=moveStack->source[0];
+    destColumn[1]=moveStack->source[1];
 
-        char sourceColumn[2];
-        sourceColumn[0]=moveStack->dest[0];
-        sourceColumn[1]=moveStack->dest[1];
-        char * value=moveStack->cardValue;
-        char * suit=moveStack->cardSuit;
-        char destColumn[2];
-        destColumn[0]=moveStack->source[0];
-        destColumn[1]=moveStack->source[1];
-
-        gameMove(column,foundation,sourceColumn,value,suit,destColumn);
+    gameMove(column,foundation,sourceColumn,value,suit,destColumn,true);
 
 
-        push(&undoStack,moveStack->dest,moveStack->source,value,suit);
-        pop(&moveStack);
-    }
+    push(&undoStack,moveStack->dest,moveStack->source,value,suit);
+    pop(&moveStack);
+}
 
 
 int main() {
     startStartupPhase();
     return 0;
-
-
 }
