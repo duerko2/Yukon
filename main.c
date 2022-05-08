@@ -24,9 +24,11 @@ typedef struct moveStack {
 } MoveStack;
 
 
-void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]);
+void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2]);
 
 void endGame();
+
+void startPlayPhase(Card* deck, Card *column[]);
 
 /**
  * Creates a struct of type Card. Holds the suit and value.
@@ -363,8 +365,7 @@ void startStartupPhase() {
                     dealCards(deck, column);
                     for (int i = 0; i <
                                     7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
-                        reverseList(
-                                &column[i]);                       // Alternatively we could have made the linked lists double..
+                        reverseList(&column[i]);                       // Alternatively we could have made the linked lists double..
                     }
                     makeHidden(column);
                     printGameState(column);
@@ -372,8 +373,7 @@ void startStartupPhase() {
                     printf("No deck loaded");
                 }
                 break;
-
-            case 'L'+'D':
+                case 'L'+'D':
                 //loads saved deck not implemented
                 if (str1[2]== '<') {
                     int i =3;
@@ -400,7 +400,7 @@ void startStartupPhase() {
                 break;
 
             case 'Q'+'Q':
-                exit(0);
+                endGame();
             case 'P':
 
                 if (deck == NULL){
@@ -412,8 +412,8 @@ void startStartupPhase() {
                     }
                     makeHidden(column);
                 }
-                //startPlayPhase;
-                false;
+                startPlayPhase(deck, column);
+
                 break;
 
 
@@ -423,8 +423,8 @@ void startStartupPhase() {
         }
     }
 }
-void startPlayPhase(Card* deck, Card *column[]){
-    Card * foundation[4];
+void startPlayPhase(Card* deck, Card *column[]) {
+    Card *foundation[4];
 
     char input[20];
     char selectedColumn[2];
@@ -433,13 +433,13 @@ void startPlayPhase(Card* deck, Card *column[]){
     char destinationColumn[2];
 
 
-    while(*column!=NULL && *column+1!=NULL){
+    while (*column != NULL && *column + 1 != NULL) {
         printGameState(column);
 
         printf("Enter input: ");
-        scanf("%s",input);
-        switch(input[0]+input[1]+input[2]){
-            case 'Q'+'Q':
+        scanf("%19s", input);
+        switch (input[0] + input[1] + input[2]) {
+            case 'Q' + 'Q':
                 endGame();
                 break;
             case 'Q':
@@ -453,32 +453,33 @@ void startPlayPhase(Card* deck, Card *column[]){
             case 'S':
                 break;
             default:
-                if (input[3]=0){
-                    selectedColumn[0]=input[0];
-                    selectedColumn[1]=input[1];
+                if (input[3] == 0) {
+                    selectedColumn[0] = input[0];
+                    selectedColumn[1] = input[1];
 
-                    selectedSourceCardValue[0]=input[2];
-                    selectedSourceCardValue[1]=input[3];
-                    selectedSourceCardValue[2]='\0';
+                    selectedSourceCardValue[0] = input[2];
+                    selectedSourceCardValue[1] = input[3];
+                    selectedSourceCardValue[2] = '\0';
 
-                    selectedSourceCardSuit[0]=input[4];
-                    selectedSourceCardSuit[1]='\0';
+                    selectedSourceCardSuit[0] = input[4];
+                    selectedSourceCardSuit[1] = '\0';
 
-                    destinationColumn[0]=input[8];
-                    destinationColumn[1]=input[9];
-                }
-                else{
-                    selectedColumn[0]=input[0];
-                    selectedColumn[1]=input[1];
+                    destinationColumn[0] = input[6];
+                    destinationColumn[1] = input[7];
+                } else {
+                    selectedColumn[0] = input[0];
+                    selectedColumn[1] = input[1];
 
-                    selectedSourceCardValue[0]=input[2];
-                    selectedSourceCardValue[1]='\0';
+                    selectedSourceCardValue[0] = input[2];
+                    selectedSourceCardValue[1] = '\0';
+                    selectedSourceCardValue[2] = '\0';
 
-                    selectedSourceCardSuit[0]=input[3];
-                    selectedSourceCardSuit[1]='\0';
+                    selectedSourceCardSuit[0] = input[3];
+                    selectedSourceCardSuit[1] = '\0';
+                    
 
-                    destinationColumn[0]=input[7];
-                    destinationColumn[1]=input[8];
+                    destinationColumn[0] = input[5];
+                    destinationColumn[1] = input[6];
 
                     // Example input "C210D : C3"
                     // Example input "C34C : F2"
@@ -486,19 +487,219 @@ void startPlayPhase(Card* deck, Card *column[]){
                     // TODO: Handle wrong input here!
 
                 }
-                gameMove(column,foundation,selectedColumn,selectedSourceCardValue,selectedSourceCardSuit,destinationColumn);
+                gameMove(column, foundation, selectedColumn, selectedSourceCardValue, selectedSourceCardSuit,
+                         destinationColumn);
                 break;
         }
     }
 }
 
 void endGame() {
-
+    exit(0);
 }
 
-void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]) {
+void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2]) {
+    // laver chars i columns om til ints
+    int iselectedColumn = selectedColumn[1] - '0';
+    int idestinationColumn = destinationColumn[1] - '0';
+    // finder det øverste tal i en af vores columns linked list
+    Card *currentCard = newColumn[iselectedColumn - 1];
+    Card *currentCard1 = newColumn[idestinationColumn - 1];
+    //laver en temp fil til at holde stur på hvad der skal overføres
+    Card *temp;
+    //if(selectedColumn[0] == 'C' && selectedColumn[1] <8 && selectedColumn[1] >0 && selectedSourceCardValue[0] < 10 && selectedSourceCardValue[0] >0 || selectedSourceCardValue[0] == 'J' || selectedSourceCardValue[0] == 'Q' || selectedSourceCardValue[0] == 'K'|| selectedSourceCardValue[1]== 0  && selectedSourceCardSuit[0] == 'S' || selectedSourceCardSuit[0] == 'C' || selectedSourceCardSuit[0] == 'D' || selectedSourceCardSuit[0] == 'H' && destinationColumn[0] == 'C' || destinationColumn[0] == 'F'  ){
+    //chcks if it is a column or foundation
+    if (destinationColumn[0] == 'C') {
+        //checks if it is possible to take cards from the column by checking if the column is empty
+        if (currentCard == NULL) {
+            printf("there is no Card in the selected Column" "\n");
+            return;
+        } else
+            //checks if the currentCard is in the linkedlist by checking value suit and if it is hidden
+            while (currentCard->next->value[0] != selectedSourceCardValue[0] || currentCard->next->suit[0] != selectedSourceCardSuit[0] || currentCard->next->hidden!=false)  {
+                currentCard = currentCard->next;
+                // hvis kortet ikke er fundet efter en gennemgang
+                //if( )
+            }
+            //temp is given a pointer
+        temp = currentCard->next;
+            //finds the last card in the column we want to move the cards to
+        while (currentCard1->next != NULL) {
+            currentCard1 = currentCard1->next;
+        }
+        // switch for each value that the cards can have
+        switch (temp->value[0]) {
+            case 'A': {
+                //checks if the currentCard1 value is bigger than currentCard
+                if (currentCard1->value[0] == '2'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    //sets currentCard1 pointer to temp
+                    currentCard1->next = temp;
+                    //sets currentcard pointer to null
+                    currentCard->next = NULL;
+                    //makes a card visible if it removes the last visible card
+                    if (currentCard->hidden ==true){
+                        currentCard->hidden=false;
+                    }
+                    break;
+                }
+                break;
+            }
+            case '1': {
+                if (temp->value[1] == 0) {
+                    if (currentCard1->value[0] == 'J'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
 
-}
+                case '2': {
+                    if (currentCard1->value[0] == '3'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '3': {
+                    if (currentCard1->value[0] == '4'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '4': {
+                    if (currentCard1->value[0] == '5'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '5': {
+                    if (currentCard1->value[0] == '6'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '6': {
+                    if (currentCard1->value[0] == '7'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '7': {
+                    if (currentCard1->value[0] == '8'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '8': {
+                    if (currentCard1->value[0] == '9'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '9': {
+                    if (currentCard1->value[0] == '1' && currentCard1->value[1] == 0&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case 'J': {
+                    if (currentCard1->value[0] == 'Q'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case 'Q': {
+                    if (currentCard1->value[0] == 'K'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                        currentCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden ==true){
+                            currentCard->hidden=false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+                //todo make sure it works as intended
+                case 'K': {
+                    if (newColumn[destinationColumn[1] - 1] == NULL) {
+                        newColumn[destinationColumn[1] - 1] = temp;
+                        break;
+                    } else {
+                        printf("Feltet er ikke tomt ");
+                        break;
+                    }
+
+                }
+
+
+            }
+
+
+        }
+
+
+    } else{
+
+    }
+
+    }
 
 
 int main() {
