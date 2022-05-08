@@ -502,7 +502,7 @@ void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3
 
 
 int main() {
-
+    startStartupPhase();
     return 0;
 
 
