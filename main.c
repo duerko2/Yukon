@@ -567,7 +567,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 break;
             }
             case '1': {
-                if ((temp->value[1] == '0')||noChecks) {
+                if (temp->value[1] == '0') {
                     if ((currentCard1->value[0] == 'J'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
