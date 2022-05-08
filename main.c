@@ -171,15 +171,15 @@ void reverseList(Card** head_ref)
  * @param deck The deck of cards represented as single linked list
  * @param column The array of linked lists.
  */
-void dealCards(Card *deck,Card *column[]){
+void dealCards(Card *deck,Card *column[]) {
 
 
-    int columnValues[] = {1,6,7,8,9,10,11};
+    int columnValues[] = {1, 6, 7, 8, 9, 10, 11};
 
-    Card * currentCard = (Card*)malloc(sizeof (Card));
+    Card *currentCard = (Card *) malloc(sizeof(Card));
 
     currentCard = deck;
-    for(int i=0;i<52;i++) {
+    for (int i = 0; i < 52; i++) {
         for (int j = 0; j < 7; j++) {
             int allowedAmountOfCards = columnValues[j];
             int currentIndex = 0;
@@ -192,13 +192,13 @@ void dealCards(Card *deck,Card *column[]){
                 currentPlacement = currentPlacement->next;
                 currentIndex++;
             }
-            if(currentIndex<allowedAmountOfCards) {
+            if (currentIndex < allowedAmountOfCards) {
                 currentPlacement = createCard(currentCard->value, currentCard->suit);
                 currentPlacement->next = column[j];
                 column[j] = currentPlacement;
 
 
-            currentCard = currentCard->next;
+                currentCard = currentCard->next;
             }
         }
     }
@@ -292,6 +292,7 @@ void startStartupPhase() {
         scanf("%20s",str1);
 
         switch(str1[0]+str1[1]) {
+            // prints loaded deck
             case 'S'+'W':
                 if (deck != NULL) {
                     dealCards(deck, column);
@@ -308,6 +309,7 @@ void startStartupPhase() {
                 break;
 
             case 'L'+'D':
+                //loads saved deck not implemented
                 if (str1[2]== '<') {
                     int i =3;
                     int j =0;
@@ -317,13 +319,19 @@ void startStartupPhase() {
                         i++,j++;
                     }
                     printf("Not implemented yet""\n");
-                } else {
+
+                }
+                // loads standard deck
+                else {
                     deck = createDeck();
                 }
                 break;
-
+                // shuffles deck
             case 'S'+'R':
-                deck = shuffleDeck(deck);
+                if ( deck != NULL) {
+                    deck = shuffleDeck(deck);
+                } else
+                    printf("No deck loaded");
                 break;
 
             case 'Q'+'Q':
