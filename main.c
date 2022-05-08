@@ -50,6 +50,14 @@ Card * createCard(char *value,char *suit){
     return newCard;
 }
 
+/**
+ *  Creates a new Move element for the stack. This element contains all the information about the move.
+ * @param source source column or foundation
+ * @param dest destination column or foundation
+ * @param cardValue card value
+ * @param cardSuit card suit.
+ * @return
+ */
 MoveStack * createMoveStack(char * source, char *dest, char *cardValue, char *cardSuit){
     MoveStack * newMoveStack;
 
@@ -64,6 +72,11 @@ MoveStack * createMoveStack(char * source, char *dest, char *cardValue, char *ca
     return newMoveStack;
 }
 
+bool isEmpty(MoveStack** stackPointer){
+    if(*stackPointer==NULL){
+        return true;
+    } else return false;
+}
 
 /**
  * Pushes information about a move onto a stack.
@@ -80,7 +93,14 @@ void push(MoveStack** stackPointer, char *source, char *dest, char * cardValue, 
     printf("%s:%s,%s%s pushed to stack\n",source,dest,cardValue,cardSuit);
 }
 
+/**
+ * Pops the top element of the stack. Sets the stackpointer to next element.
+ * @param stackPointer Pointer to top of stack
+ */
 void pop(MoveStack** stackPointer){
+    if(isEmpty(stackPointer)){                                                                              // Check if stack is empty. Should never happen in our game,
+        return;                                                                                             // but still a good guard to include.
+    }
     MoveStack* temp = *stackPointer;
     *stackPointer = (*stackPointer)->next;
     printf("%s:%s,%s%s popped from stack\n",temp->source,temp->dest,temp->cardValue,temp->cardSuit);
@@ -152,8 +172,6 @@ Card * createDeck(){
  * Shuffle a card deck into a new linked list which will be the new deck in a random order.
  * @return
  */
-
-// NOT WORKING YET
 
 Card * shuffleDeck(Card* head_ref){
 
@@ -487,6 +505,8 @@ int main() {
 
     MoveStack * moveStack = NULL;
 
+    printf("%d\n", isEmpty(&moveStack));
+
     char source[3];
     source[0]='C';
     source[1]='1';
@@ -504,6 +524,7 @@ int main() {
     cardSuit[1]='\0';
 
     push(&moveStack,source,dest,cardValue,cardSuit);
+    printf("%d\n", isEmpty(&moveStack));
 
 
 
