@@ -24,6 +24,9 @@ typedef struct moveStack {
 } MoveStack;
 
 
+MoveStack *moveStack=NULL;
+MoveStack *undoStack=NULL;
+
 void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]);
 
 void endGame();
@@ -172,7 +175,6 @@ Card * createDeck(){
  * Shuffle a card deck into a new linked list which will be the new deck in a random order.
  * @return
  */
-
 Card * shuffleDeck(Card* head_ref){
 
     Card *shuffledeck = NULL;
@@ -494,6 +496,24 @@ void startPlayPhase(Card* deck, Card *column[]){
 
 void endGame() {
 
+}
+
+void undoMove(Card ** column, Card **foundation){
+
+    char sourceColumn[2];
+    sourceColumn[0]=moveStack->dest[0];
+    sourceColumn[1]=moveStack->dest[1];
+    char * value=moveStack->cardValue;
+    char * suit=moveStack->cardSuit;
+    char destColumn[2];
+    destColumn[0]=moveStack->source[0];
+    destColumn[1]=moveStack->source[1];
+
+    gameMove(column,foundation,sourceColumn,value,suit,destColumn);
+
+
+    push(&undoStack,moveStack->dest,moveStack->source,value,suit);
+    pop(&moveStack);
 }
 
 void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]) {
