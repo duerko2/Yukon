@@ -14,6 +14,15 @@ typedef struct card {
     struct card *next;
 } Card;
 
+//Structure for the move stack
+typedef struct moveStack {
+    char source[3];
+    char dest[3];
+    char cardValue[3];
+    char cardSuit[2];
+    struct moveStack* next;
+} MoveStack;
+
 
 void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3], char suit[2], char column1[2]);
 
@@ -41,6 +50,43 @@ Card * createCard(char *value,char *suit){
     return newCard;
 }
 
+MoveStack * createMoveStack(char * source, char *dest, char *cardValue, char *cardSuit){
+    MoveStack * newMoveStack;
+
+    newMoveStack = (MoveStack*)malloc(sizeof (MoveStack));
+
+    strcpy(newMoveStack->source,source);
+    strcpy(newMoveStack->dest,dest);
+    strcpy(newMoveStack->cardValue, cardValue);
+    strcpy(newMoveStack->cardSuit, cardSuit);
+    newMoveStack->next = NULL;
+
+    return newMoveStack;
+}
+
+
+/**
+ * Pushes information about a move onto a stack.
+ * @param stackPointer This is the stackPointer. It points to the top of the stack.
+ * @param source Source register
+ * @param dest Destination register
+ * @param cardValue Card value
+ * @param cardSuit Card suit
+ */
+void push(MoveStack** stackPointer, char *source, char *dest, char * cardValue, char *cardSuit){
+    MoveStack * node = createMoveStack(source, dest, cardValue, cardSuit);
+    node->next = *stackPointer;
+    *stackPointer = node;
+    printf("%s:%s,%s%s pushed to stack\n",source,dest,cardValue,cardSuit);
+}
+
+void pop(MoveStack** stackPointer){
+    MoveStack* temp = *stackPointer;
+    *stackPointer = (*stackPointer)->next;
+    printf("%s:%s,%s%s popped from stack\n",temp->source,temp->dest,temp->cardValue,temp->cardSuit);
+    free(temp);
+}
+
 
 /**
  * Prints out the entire deck.
@@ -60,6 +106,20 @@ void printCardList(Card *list) {
         list = list->next; // move to next node
     }
     printf("\n\n");
+}
+
+/**
+ * Creates a random number
+ * @return
+ */
+
+int randomNumber(){
+    srand(time(0));
+    int l = 0;
+    int u = 9999;
+
+    int num = (rand() % (u - l + 1)) + l;
+    return num;
 }
 
 
@@ -87,23 +147,6 @@ Card * createDeck(){
     return deck;
 }
 
-/**
- * Creates a random number
- * @return
- */
-
-int random(){
-
-
-    srand(time(0));
-    int l = 0;
-    int u = 9999;
-
-        int num = (rand() % (u - l + 1)) + l;
-        return num;
-
-}
-
 
 /**
  * Shuffle a card deck into a new linked list which will be the new deck in a random order.
@@ -126,7 +169,7 @@ Card * shuffleDeck(Card* head_ref){
 
     for (int i=0;i<51;i++){
 
-        int ran = random();
+        int ran = randomNumber();
 
         //current = current -> next;
 
@@ -442,24 +485,65 @@ void gameMove(Card **pCard, struct card *pCard1[4], char column[2], char value[3
 
 int main() {
 
-    startStartupPhase();
+    MoveStack * moveStack = NULL;
+
+    char source[3];
+    source[0]='C';
+    source[1]='1';
+    source[2]='\0';
+    char dest[3];
+    dest[0]='C';
+    dest[1]='3';
+    dest[2]='\0';
+    char cardValue[3];
+    cardValue[0]='1';
+    cardValue[1]='0';
+    cardValue[2]='\0';
+    char cardSuit[2];
+    cardSuit[0]='D';
+    cardSuit[1]='\0';
+
+    push(&moveStack,source,dest,cardValue,cardSuit);
 
 
-    Card *deck = createDeck();                                  //Pointer to top card of deck
 
-    Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};     // Pointer to array of linked lists representing the 7 columns in the game.
+    source[0]='C';
+    source[1]='2';
+    source[2]='\0';
 
-    Card * foundation[] = {NULL,NULL,NULL,NULL};                // Pointer to array of linked lists representing the 4 foundation columns.
+    dest[0]='C';
+    dest[1]='5';
+    dest[2]='\0';
 
-    dealCards(deck,column);                                     // Deals the cards form the deck into the columns.
+    cardValue[0]='2';
+    cardValue[1]='\0';
+    cardValue[2]='\0';
 
-    printCardList(deck);                                    // Prints the entire deck starting from top card.
+    cardSuit[0]='H';
+    cardSuit[1]='\0';
 
-    for(int i=0;i<7;i++){                                       // Reverses the 7 columns, so top card is at beginning of list.
-        reverseList(&column[i]);                       // Alternatively we could have made the linked lists double..
-    }
-    makeHidden(column);
-    printGameState(column);                                     // Prints the game board
+    push(&moveStack,source,dest,cardValue,cardSuit);
+
+    source[0]='C';
+    source[1]='3';
+    source[2]='\0';
+
+    dest[0]='F';
+    dest[1]='5';
+    dest[2]='\0';
+
+    cardValue[0]='K';
+    cardValue[1]='\0';
+    cardValue[2]='\0';
+
+    cardSuit[0]='S';
+    cardSuit[1]='\0';
+    push(&moveStack,source,dest,cardValue,cardSuit);
+    pop(&moveStack);
+    pop(&moveStack);
+    pop(&moveStack);
+    push(&moveStack,source,dest,cardValue,cardSuit);
+    pop(&moveStack);
 
 
     return 0;
