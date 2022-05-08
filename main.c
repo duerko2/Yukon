@@ -438,31 +438,44 @@ void endGame() {
 }
 
 void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2]) {
+    // laver chars i columns om til ints
     int iselectedColumn = selectedColumn[1] - '0';
     int idestinationColumn = destinationColumn[1] - '0';
+    // finder det øverste tal i en af vores columns linked list
     Card *currentCard = newColumn[iselectedColumn - 1];
     Card *currentCard1 = newColumn[idestinationColumn - 1];
+    //laver en temp fil til at holde stur på hvad der skal overføres
     Card *temp;
     //if(selectedColumn[0] == 'C' && selectedColumn[1] <8 && selectedColumn[1] >0 && selectedSourceCardValue[0] < 10 && selectedSourceCardValue[0] >0 || selectedSourceCardValue[0] == 'J' || selectedSourceCardValue[0] == 'Q' || selectedSourceCardValue[0] == 'K'|| selectedSourceCardValue[1]== 0  && selectedSourceCardSuit[0] == 'S' || selectedSourceCardSuit[0] == 'C' || selectedSourceCardSuit[0] == 'D' || selectedSourceCardSuit[0] == 'H' && destinationColumn[0] == 'C' || destinationColumn[0] == 'F'  ){
+    //chcks if it is a column or foundation
     if (destinationColumn[0] == 'C') {
+        //checks if it is possible to take cards from the column by checking if the column is empty
         if (currentCard == NULL) {
             printf("there is no Card in the selected Column" "\n");
             return;
         } else
+            //checks if the currentCard is in the linkedlist by checking value suit and if it is hidden
             while (currentCard->next->value[0] != selectedSourceCardValue[0] || currentCard->next->suit[0] != selectedSourceCardSuit[0] || currentCard->next->hidden!=false)  {
                 currentCard = currentCard->next;
                 // hvis kortet ikke er fundet efter en gennemgang
                 //if( )
             }
+            //temp is given a pointer
         temp = currentCard->next;
+            //finds the last card in the column we want to move the cards to
         while (currentCard1->next != NULL) {
             currentCard1 = currentCard1->next;
         }
+        // switch for each value that the cards can have
         switch (temp->value[0]) {
             case 'A': {
+                //checks if the currentCard1 value is bigger than currentCard
                 if (currentCard1->value[0] == '2'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) {
+                    //sets currentCard1 pointer to temp
                     currentCard1->next = temp;
+                    //sets currentcard pointer to null
                     currentCard->next = NULL;
+                    //makes a card visible if it removes the last visible card
                     if (currentCard->hidden ==true){
                         currentCard->hidden=false;
                     }
@@ -602,7 +615,7 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                     }
                     break;
                 }
-
+                //todo make sure it works as intended
                 case 'K': {
                     if (newColumn[destinationColumn[1] - 1] == NULL) {
                         newColumn[destinationColumn[1] - 1] = temp;
