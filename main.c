@@ -459,7 +459,7 @@ void startPlayPhase(Card* deck, Card *column[]) {
             case 'S':
                 break;
             default:
-                if (input[3] == 0) {
+                if (input[3] == '0') {
                     selectedColumn[0] = input[0];
                     selectedColumn[1] = input[1];
 
@@ -509,7 +509,8 @@ void startPlayPhase(Card* deck, Card *column[]) {
                 dest[2]='\0';
                 push(&moveStack,source,dest,selectedSourceCardValue,selectedSourceCardSuit);
 
-                // TODO: Empty undo stack.
+                // Empty undo stack after every succesful move.
+                undoStack=NULL;
 
                 break;
         }
@@ -520,7 +521,7 @@ void endGame() {
     exit(0);
 }
 
-void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2], bool noChecks) {
+void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2], bool noChecks) {
     // laver chars i columns om til ints
     int iselectedColumn = selectedColumn[1] - '0';
     int idestinationColumn = destinationColumn[1] - '0';
@@ -723,6 +724,28 @@ void undoMove(Card ** column, Card **foundation){
     char destColumn[2];
     destColumn[0]=moveStack->source[0];
     destColumn[1]=moveStack->source[1];
+
+        // Checks if the move needs to make a card hidden in the destination column
+    if(destColumn[0]=='C') {
+        int destColumnIndex=destColumn[1]-'0'-1;
+
+        //currentCard is the top card of the destination column
+        Card* currentCard=column[destColumnIndex];
+
+        //Should skip everything if the destination column is empty
+        if(currentCard!=NULL) {
+
+            //Traverses the linked list until reaching a card that is not hidden.
+            while (currentCard->hidden==true) {
+                currentCard = currentCard->next;
+            }
+
+            //If the card is the first and last not hidden of that column, it should be flipped.
+            if(currentCard->next==NULL){
+                currentCard->hidden=true;
+            }
+        }
+    }
 
     gameMove(column,foundation,sourceColumn,value,suit,destColumn,true);
 
