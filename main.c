@@ -379,7 +379,7 @@ void startStartupPhase() {
                         reverseList(&column[i]);                           // Alternatively we could have made the linked lists double..
                     }
                     makeHidden(column);
-                    printGameState(column);
+                    printGameState(column,foundation);
                     for (int i = 0; i <7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
                         column[i]=NULL;                          // Alternatively we could have made the linked lists double..
                     }
@@ -439,6 +439,7 @@ void startStartupPhase() {
         }
     }
 }
+
 void startPlayPhase(Card* deck, Card *column[]) {
     Card *foundation[4];
 
@@ -450,13 +451,14 @@ void startPlayPhase(Card* deck, Card *column[]) {
 
 
     while (true) {
-        printGameState(column);
+        printGameState(column,foundation);
 
         printf("Enter input: ");
         scanf("%19s", input);
         switch (input[0] + input[1]) {
             case 'Q' + 'Q':
                 endGame();
+                return;
                 break;
             case 'Q':
                 break;
