@@ -20,6 +20,7 @@ typedef struct moveStack {
     char dest[3];
     char cardValue[3];
     char cardSuit[2];
+    bool flippedCard;
     struct moveStack* next;
 } MoveStack;
 
@@ -27,7 +28,7 @@ typedef struct moveStack {
 MoveStack *moveStack=NULL;
 MoveStack *undoStack=NULL;
 
-void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2],bool noChecks);
+bool gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2],bool noChecks);
 
 void endGame();
 
@@ -92,8 +93,9 @@ bool isEmpty(MoveStack** stackPointer){
  * @param cardValue Card value
  * @param cardSuit Card suit
  */
-void push(MoveStack** stackPointer, char *source, char *dest, char * cardValue, char *cardSuit){
+void push(MoveStack** stackPointer, char *source, char *dest, char * cardValue, char *cardSuit,bool cardFlipped){
     MoveStack * node = createMoveStack(source, dest, cardValue, cardSuit);
+    node->flippedCard=cardFlipped;
     node->next = *stackPointer;
     *stackPointer = node;
     printf("%s:%s,%s%s pushed to stack\n",source,dest,cardValue,cardSuit);
@@ -493,7 +495,7 @@ void startPlayPhase(Card* deck, Card *column[]) {
                     // TODO: Handle wrong input here!
 
                 }
-                gameMove(column, foundation, selectedColumn, selectedSourceCardValue, selectedSourceCardSuit,
+                bool cardFlipped=gameMove(column, foundation, selectedColumn, selectedSourceCardValue, selectedSourceCardSuit,
                          destinationColumn,false);
 
                 // Push move to the move stack.
@@ -507,7 +509,7 @@ void startPlayPhase(Card* deck, Card *column[]) {
                 dest[0]=destinationColumn[0];
                 dest[1]=destinationColumn[1];
                 dest[2]='\0';
-                push(&moveStack,source,dest,selectedSourceCardValue,selectedSourceCardSuit);
+                push(&moveStack,source,dest,selectedSourceCardValue,selectedSourceCardSuit,cardFlipped);
 
                 // Empty undo stack after every succesful move.
                 undoStack=NULL;
@@ -521,7 +523,7 @@ void endGame() {
     exit(0);
 }
 
-void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2], bool noChecks) {
+bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2], bool noChecks) {
     // laver chars i columns om til ints
     int iselectedColumn = selectedColumn[1] - '0';
     int idestinationColumn = destinationColumn[1] - '0';
@@ -530,13 +532,16 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
     Card *currentCard1 = newColumn[idestinationColumn - 1];
     //laver en temp fil til at holde stur på hvad der skal overføres
     Card *temp;
+
+    // boolean to check if the move flipped a card in the source column.
+    bool flippedCard=false;
     //if(selectedColumn[0] == 'C' && selectedColumn[1] <8 && selectedColumn[1] >0 && selectedSourceCardValue[0] < 10 && selectedSourceCardValue[0] >0 || selectedSourceCardValue[0] == 'J' || selectedSourceCardValue[0] == 'Q' || selectedSourceCardValue[0] == 'K'|| selectedSourceCardValue[1]== 0  && selectedSourceCardSuit[0] == 'S' || selectedSourceCardSuit[0] == 'C' || selectedSourceCardSuit[0] == 'D' || selectedSourceCardSuit[0] == 'H' && destinationColumn[0] == 'C' || destinationColumn[0] == 'F'  ){
     //chcks if it is a column or foundation
     if (destinationColumn[0] == 'C') {
         //checks if it is possible to take cards from the column by checking if the column is empty
         if (currentCard == NULL) {
             printf("there is no Card in the selected Column" "\n");
-            return;
+            return flippedCard;
         } else
             //checks if the currentCard is in the linkedlist by checking value suit and if it is hidden
             while (currentCard->next->value[0] != selectedSourceCardValue[0] || currentCard->next->suit[0] != selectedSourceCardSuit[0] || currentCard->next->hidden!=false)  {
@@ -562,6 +567,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                     //makes a card visible if it removes the last visible card
                     if (currentCard->hidden ==true){
                         currentCard->hidden=false;
+                        flippedCard=true;
                     }
                     break;
                 }
@@ -574,6 +580,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -586,6 +593,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -598,6 +606,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -610,6 +619,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -622,6 +632,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -634,6 +645,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -646,6 +658,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -658,6 +671,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -670,6 +684,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -682,6 +697,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -694,6 +710,7 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->next = NULL;
                         if (currentCard->hidden ==true){
                             currentCard->hidden=false;
+                            flippedCard=true;
                         }
                         break;
                     }
@@ -713,6 +730,8 @@ void gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
         }
     } else {
     }
+
+    return flippedCard;
 }
 
 void undoMove(Card ** column, Card **foundation){
@@ -726,7 +745,7 @@ void undoMove(Card ** column, Card **foundation){
     destColumn[1]=moveStack->source[1];
 
         // Checks if the move needs to make a card hidden in the destination column
-    if(destColumn[0]=='C') {
+    if(destColumn[0]=='C'&&moveStack->flippedCard==true) {
         int destColumnIndex=destColumn[1]-'0'-1;
 
         //currentCard is the top card of the destination column
@@ -750,7 +769,7 @@ void undoMove(Card ** column, Card **foundation){
     gameMove(column,foundation,sourceColumn,value,suit,destColumn,true);
 
 
-    push(&undoStack,moveStack->dest,moveStack->source,value,suit);
+    push(&undoStack,moveStack->dest,moveStack->source,value,suit,false);
     pop(&moveStack);
 }
 
