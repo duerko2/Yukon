@@ -438,7 +438,7 @@ void startPlayPhase(Card* deck, Card *column[]) {
     char destinationColumn[2];
 
 
-    while (*column != NULL && *column + 1 != NULL) {
+    while (true) {
         printGameState(column);
 
         printf("Enter input: ");
@@ -526,26 +526,32 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
     int idestinationColumn = destinationColumn[1] - '0';
     // finder det øverste tal i en af vores columns linked list
     Card *currentCard = newColumn[iselectedColumn - 1];
-    Card *currentCard1 = newColumn[idestinationColumn - 1];
     //laver en temp fil til at holde stur på hvad der skal overføres
     Card *temp;
     //if(selectedColumn[0] == 'C' && selectedColumn[1] <8 && selectedColumn[1] >0 && selectedSourceCardValue[0] < 10 && selectedSourceCardValue[0] >0 || selectedSourceCardValue[0] == 'J' || selectedSourceCardValue[0] == 'Q' || selectedSourceCardValue[0] == 'K'|| selectedSourceCardValue[1]== 0  && selectedSourceCardSuit[0] == 'S' || selectedSourceCardSuit[0] == 'C' || selectedSourceCardSuit[0] == 'D' || selectedSourceCardSuit[0] == 'H' && destinationColumn[0] == 'C' || destinationColumn[0] == 'F'  ){
     //chcks if it is a column or foundation
     if (destinationColumn[0] == 'C') {
+        Card *currentCard1 = newColumn[idestinationColumn - 1];
         //checks if it is possible to take cards from the column by checking if the column is empty
         if (currentCard == NULL) {
             printf("there is no Card in the selected Column" "\n");
             return;
-        } else
+        } else if (currentCard->value[0] == selectedSourceCardValue[0] && currentCard->suit[0] == selectedSourceCardSuit[0] && currentCard->hidden == false && currentCard->next == NULL) {
+            temp = currentCard;
+            currentCard = NULL;
+
+        } else {
             //checks if the currentCard is in the linkedlist by checking value suit and if it is hidden
-            while (currentCard->next->value[0] != selectedSourceCardValue[0] || currentCard->next->suit[0] != selectedSourceCardSuit[0] || currentCard->next->hidden!=false)  {
+            while (currentCard->next->value[0] != selectedSourceCardValue[0] ||
+                   currentCard->next->suit[0] != selectedSourceCardSuit[0] || currentCard->next->hidden != false) {
                 currentCard = currentCard->next;
                 // hvis kortet ikke er fundet efter en gennemgang
                 //if( )
             }
             //temp is given a pointer
-        temp = currentCard->next;
-            //finds the last card in the column we want to move the cards to
+            temp = currentCard->next;
+        }
+        //finds the last card in the column we want to move the cards to
         while (currentCard1->next != NULL) {
             currentCard1 = currentCard1->next;
         }
@@ -553,62 +559,95 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
         switch (temp->value[0]) {
             case 'A': {
                 //checks if the currentCard1 value is bigger than currentCard
-                if ((currentCard1->value[0] == '2'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                if ((currentCard1->value[0] == '2' && currentCard1->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                     //sets currentCard1 pointer to temp
                     currentCard1->next = temp;
-                    //sets currentcard pointer to null
-                    currentCard->next = NULL;
-                    //makes a card visible if it removes the last visible card
-                    if (currentCard->hidden ==true){
-                        currentCard->hidden=false;
+                    if (currentCard != NULL){
+                        //sets currentcard pointer to null
+                        currentCard->next = NULL;
+                        //makes a card visible if it removes the last visible card
+                        if (currentCard->hidden == true ) {
+                            currentCard->hidden = false;
+                        }
+
+
+                }else {
+                    newColumn[iselectedColumn-1] = NULL;
                     }
-                    break;
                 }
                 break;
             }
             case '1': {
                 if (temp->value[1] == '0') {
-                    if ((currentCard1->value[0] == 'J'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == 'J' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
 
                 case '2': {
-                    if ((currentCard1->value[0] == '3'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '3' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
 
-                case '3': {
-                    if ((currentCard1->value[0] == '4'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    case '3': {
+                    if ((currentCard1->value[0] == '4' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
 
                 case '4': {
-                    if ((currentCard1->value[0] == '5'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '5' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
                         currentCard1->next = temp;
                         currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
                         }
                         break;
                     }
@@ -616,91 +655,159 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
                 }
 
                 case '5': {
-                    if ((currentCard1->value[0] == '6'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '6' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
 
                 case '6': {
-                    if ((currentCard1->value[0] == '7'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '7' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
 
                 case '7': {
-                    if ((currentCard1->value[0] == '8'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '8' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
+
 
                 case '8': {
-                    if ((currentCard1->value[0] == '9'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '9' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
+
 
                 case '9': {
-                    if ((currentCard1->value[0] == '1' && currentCard1->value[1] == '0'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                    if ((currentCard1->value[0] == '1' && currentCard1->value[1] == '0' &&
+                         currentCard1->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
+
 
                 case 'J': {
-                    if ((currentCard1->value[0] == 'Q'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == 'Q' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
 
+
                 case 'Q': {
-                    if ((currentCard1->value[0] == 'K'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == 'K' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
-                        currentCard->next = NULL;
-                        if (currentCard->hidden ==true){
-                            currentCard->hidden=false;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                            }
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
                         }
-                        break;
                     }
                     break;
                 }
+
                 //todo make sure it works as intended
                 case 'K': {
-                    if (newColumn[destinationColumn[1] - 1] == NULL||noChecks) {
+                    if (newColumn[destinationColumn[1] - 1] == NULL) {
                         newColumn[destinationColumn[1] - 1] = temp;
                         break;
                     } else {
@@ -711,28 +818,205 @@ void gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[
             }
         }
     } else {
+        Card *currentFoundationCard1 = foundation[idestinationColumn - 1];
+        if (currentCard == NULL) {
+            printf("there is no Cards in the selected Column" "\n");
+            return;
+        }
+        while (currentCard->next != NULL) {
+            currentCard = currentCard->next;
+        }
+        temp = currentCard;
+        switch (temp->value[0]) {
+            case '1': {
+                if (temp->value[1] == '0') {
+                    if ((currentFoundationCard1->value[0] == '9' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '2': {
+                    if ((currentFoundationCard1->value[0] == 'A' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '3': {
+                    if ((currentFoundationCard1->value[0] == '2' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '4': {
+                    if ((currentFoundationCard1->value[0] == '3' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '5': {
+                    if ((currentFoundationCard1->value[0] == '4' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '6': {
+                    if ((currentFoundationCard1->value[0] == '5' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '7': {
+                    if ((currentFoundationCard1->value[0] == '6' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '8': {
+                    if ((currentFoundationCard1->value[0] == '7' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case '9': {
+                    if ((currentFoundationCard1->value[0] == '8' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case 'J': {
+                    if ((currentFoundationCard1->value[0] == '1' && currentFoundationCard1->value[1] == '0' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+
+                case 'Q': {
+                    if ((currentFoundationCard1->value[0] == 'J' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+                }
+                //todo make sure it works as intended
+                case 'K': {
+                    if ((currentFoundationCard1->value[0] == 'Q' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                        noChecks) {
+                        currentFoundationCard1->next = temp;
+                        currentCard->next = NULL;
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                        }
+                        break;
+                    }
+                    break;
+
+                }
+
+
+            }
+        }
     }
 }
 
-void undoMove(Card ** column, Card **foundation){
-    char sourceColumn[2];
-    sourceColumn[0]=moveStack->dest[0];
-    sourceColumn[1]=moveStack->dest[1];
-    char * value=moveStack->cardValue;
-    char * suit=moveStack->cardSuit;
-    char destColumn[2];
-    destColumn[0]=moveStack->source[0];
-    destColumn[1]=moveStack->source[1];
+        void undoMove(Card **column, Card **foundation) {
+            char sourceColumn[2];
+            sourceColumn[0] = moveStack->dest[0];
+            sourceColumn[1] = moveStack->dest[1];
+            char *value = moveStack->cardValue;
+            char *suit = moveStack->cardSuit;
+            char destColumn[2];
+            destColumn[0] = moveStack->source[0];
+            destColumn[1] = moveStack->source[1];
 
-    gameMove(column,foundation,sourceColumn,value,suit,destColumn,true);
-
-
-    push(&undoStack,moveStack->dest,moveStack->source,value,suit);
-    pop(&moveStack);
-}
+            gameMove(column, foundation, sourceColumn, value, suit, destColumn, true);
 
 
-int main() {
-    startStartupPhase();
-    return 0;
-}
+            push(&undoStack, moveStack->dest, moveStack->source, value, suit);
+            pop(&moveStack);
+        }
+
+
+
+                int main() {
+                    startStartupPhase();
+                    return 0;
+                }
+
+
+
+
