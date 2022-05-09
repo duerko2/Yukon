@@ -368,12 +368,14 @@ void startStartupPhase() {
             case 'S'+'W':
                 if (deck != NULL) {
                     dealCards(deck, column);
-                    for (int i = 0; i <
-                                    7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
-                        reverseList(&column[i]);                       // Alternatively we could have made the linked lists double..
+                    for (int i = 0; i <7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
+                        reverseList(&column[i]);                           // Alternatively we could have made the linked lists double..
                     }
                     makeHidden(column);
                     printGameState(column);
+                    for (int i = 0; i <7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
+                        column[i]=NULL;                          // Alternatively we could have made the linked lists double..
+                    }
                 }else {
                     printf("No deck loaded");
                 }
