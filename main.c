@@ -463,7 +463,9 @@ void startPlayPhase(Card* deck, Card ** column) {
                 endGame();
                 return;
                 break;
+                //TODO: Check how return to startup works
             case 'Q':
+                return;
                 break;
             case 'U':
                 undoMove(column,foundation);
