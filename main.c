@@ -886,16 +886,43 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
             printf("there is no Cards in the selected Column" "\n");
             return flippedCard;
         }
+        if (currentCard == NULL){
+
+        }
         while (currentCard->next != NULL) {
             currentCard = currentCard->next;
+
         }
-        temp = currentCard;
+        temp = currentCard->next;
         switch (temp->value[0]) {
+            case 'A':{
+                if ((currentFoundationCard1 == NULL) || noChecks) {
+
+                    currentFoundationCard1 = temp;
+                    if (currentCard != NULL) {
+                        //sets currentcard pointer to null
+                        currentCard->next = NULL;
+                        //makes a card visible if it removes the last visible card
+                        if (currentCard->hidden == true) {
+                            currentCard->hidden = false;
+                            flippedCard = true;
+                        }
+
+
+                    } else {
+                        newColumn[iselectedColumn - 1] = NULL;
+                    }
+                    *validGameCheck=true;
+                    break;
+                }
+                break;
+            }
             case '1': {
                 if (temp->value[1] == '0') {
                     if ((currentFoundationCard1->value[0] == '9' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
-                        currentFoundationCard1->next = temp;
+                        temp->next = currentFoundationCard1;
+                        currentFoundationCard1 = temp;
                         currentCard->next = NULL;
                         if (currentCard->hidden == true) {
                             currentCard->hidden = false;
