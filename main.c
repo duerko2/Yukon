@@ -295,8 +295,10 @@ Card * extractLast(Card card){
  * Prints out the game state. Should be called after each input and action.
  * @param column is the pointer to the array of linked lists containing the 7 columns of the game.
  */
-void printGameState(Card * column[]){
+void printGameState(Card * column[7],Card * foundation[4]){
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
+
+    int foundationIndex=0;
 
     for(int j=0;j<52;j++) {
         bool finished=true;                                     // @finished Helps us keep track of the columns.
@@ -324,7 +326,12 @@ void printGameState(Card * column[]){
             }
         }
         if(j%2==0 && j<7){
-            printf("\t[ ]");
+            if(foundation[foundationIndex]!=NULL) {
+                printf("\t[%s%s]", foundation[foundationIndex]->value, foundation[foundationIndex]->suit);
+            } else {
+                printf("\t[]");
+            }
+            foundationIndex++;
         }
         printf("\n");
 
@@ -372,7 +379,7 @@ void startStartupPhase() {
                         reverseList(&column[i]);                           // Alternatively we could have made the linked lists double..
                     }
                     makeHidden(column);
-                    printGameState(column);
+                    printGameState(column,foundation);
                     for (int i = 0; i <7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
                         column[i]=NULL;                          // Alternatively we could have made the linked lists double..
                     }
@@ -432,6 +439,7 @@ void startStartupPhase() {
         }
     }
 }
+
 void startPlayPhase(Card* deck, Card *column[]) {
     Card *foundation[4];
 
@@ -443,13 +451,14 @@ void startPlayPhase(Card* deck, Card *column[]) {
 
 
     while (true) {
-        printGameState(column);
+        printGameState(column,foundation);
 
         printf("Enter input: ");
         scanf("%19s", input);
         switch (input[0] + input[1]) {
             case 'Q' + 'Q':
                 endGame();
+                return;
                 break;
             case 'Q':
                 break;
