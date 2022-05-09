@@ -28,7 +28,7 @@ typedef struct moveStack {
 MoveStack *moveStack=NULL;
 MoveStack *undoStack=NULL;
 
-bool gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2],bool noChecks);
+bool gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2],bool noChecks, bool *validGameCheck);
 
 void endGame();
 
@@ -495,24 +495,27 @@ void startPlayPhase(Card* deck, Card *column[]) {
                     // TODO: Handle wrong input here!
 
                 }
+                bool validGameMove=false;
                 bool cardFlipped=gameMove(column, foundation, selectedColumn, selectedSourceCardValue, selectedSourceCardSuit,
-                         destinationColumn,false);
+                         destinationColumn,false,&validGameMove);
 
                 // Push move to the move stack.
                 // TODO: Have a check somehow, so that only valid moves, that go through are pushed to the stack.
 
-                char source[3];
-                source[0]=selectedColumn[0];
-                source[1]=selectedColumn[1];
-                source[2]='\0';
-                char dest[3];
-                dest[0]=destinationColumn[0];
-                dest[1]=destinationColumn[1];
-                dest[2]='\0';
-                push(&moveStack,source,dest,selectedSourceCardValue,selectedSourceCardSuit,cardFlipped);
+                if(validGameMove) {
+                    char source[3];
+                    source[0] = selectedColumn[0];
+                    source[1] = selectedColumn[1];
+                    source[2] = '\0';
+                    char dest[3];
+                    dest[0] = destinationColumn[0];
+                    dest[1] = destinationColumn[1];
+                    dest[2] = '\0';
+                    push(&moveStack, source, dest, selectedSourceCardValue, selectedSourceCardSuit, cardFlipped);
 
-                // Empty undo stack after every succesful move.
-                undoStack=NULL;
+                    // Empty undo stack after every succesful move.
+                    undoStack = NULL;
+                }
 
                 break;
         }
@@ -523,7 +526,7 @@ void endGame() {
     exit(0);
 }
 
-bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2], bool noChecks) {
+bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2], bool noChecks, bool *validGameCheck) {
     // laver chars i columns om til ints
     int iselectedColumn = selectedColumn[1] - '0';
     int idestinationColumn = destinationColumn[1] - '0';
@@ -569,6 +572,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         currentCard->hidden=false;
                         flippedCard=true;
                     }
+                    *validGameCheck=true;
                     break;
                 }
                 break;
@@ -582,6 +586,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -595,6 +600,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -608,6 +614,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -621,6 +628,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -634,6 +642,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -647,6 +656,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -660,6 +670,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -673,6 +684,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -686,6 +698,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -699,6 +712,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -712,6 +726,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             currentCard->hidden=false;
                             flippedCard=true;
                         }
+                        *validGameCheck=true;
                         break;
                     }
                     break;
@@ -730,6 +745,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
         }
     } else {
     }
+
 
     return flippedCard;
 }
@@ -765,8 +781,9 @@ void undoMove(Card ** column, Card **foundation){
             }
         }
     }
+    bool validGameCheck;
+    gameMove(column,foundation,sourceColumn,value,suit,destColumn,true,&validGameCheck);
 
-    gameMove(column,foundation,sourceColumn,value,suit,destColumn,true);
 
 
     push(&undoStack,moveStack->dest,moveStack->source,value,suit,false);
