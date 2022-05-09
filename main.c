@@ -562,9 +562,13 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
             //temp is given a pointer
             temp = currentCard->next;
         }
-        //finds the last card in the column we want to move the cards to
-        while (currentCard1->next != NULL) {
-            currentCard1 = currentCard1->next;
+        if (currentCard1 == NULL){
+
+        } else {
+            //finds the last card in the column we want to move the cards to
+            while (currentCard1->next != NULL) {
+                currentCard1 = currentCard1->next;
+            }
         }
         // switch for each value that the cards can have
         switch (temp->value[0]) {
