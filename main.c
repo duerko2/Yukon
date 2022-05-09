@@ -851,9 +851,24 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
 
                 //todo make sure it works as intended
                 case 'K': {
-                    if (newColumn[destinationColumn[1] - 1] == NULL||noChecks) {
-                        newColumn[destinationColumn[1] - 1] = temp;
-                        break;
+                    if (newColumn[idestinationColumn- 1] == NULL||noChecks) {
+                        newColumn[idestinationColumn - 1] = temp;
+                            if (currentCard != NULL) {
+                                //sets currentcard pointer to null
+                                currentCard->next = NULL;
+                                //makes a card visible if it removes the last visible card
+                                if (currentCard->hidden == true) {
+                                    currentCard->hidden = false;
+                                    flippedCard = true;
+                                }
+
+
+                            } else {
+                                newColumn[iselectedColumn - 1] = NULL;
+                            }
+                            *validGameCheck = true;
+                            break;
+
                     } else {
                         printf("Feltet er ikke tomt ");
                         break;
