@@ -557,16 +557,18 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
     Card *temp;
 
     // boolean to check if the move flipped a card in the source column.
-    bool flippedCard=false;
+    bool flippedCard = false;
     //if(selectedColumn[0] == 'C' && selectedColumn[1] <8 && selectedColumn[1] >0 && selectedSourceCardValue[0] < 10 && selectedSourceCardValue[0] >0 || selectedSourceCardValue[0] == 'J' || selectedSourceCardValue[0] == 'Q' || selectedSourceCardValue[0] == 'K'|| selectedSourceCardValue[1]== 0  && selectedSourceCardSuit[0] == 'S' || selectedSourceCardSuit[0] == 'C' || selectedSourceCardSuit[0] == 'D' || selectedSourceCardSuit[0] == 'H' && destinationColumn[0] == 'C' || destinationColumn[0] == 'F'  ){
     //chcks if it is a column or foundation
-    if (destinationColumn[0] == 'C'&& selectedColumn[0] == 'C') {
+    if (destinationColumn[0] == 'C' && selectedColumn[0] == 'C') {
         Card *currentCard1 = newColumn[idestinationColumn - 1];
         //checks if it is possible to take cards from the column by checking if the column is empty
         if (currentCard == NULL) {
             printf("there is no Card in the selected Column" "\n");
             return flippedCard;
-        } else if (currentCard->value[0] == selectedSourceCardValue[0] && currentCard->suit[0] == selectedSourceCardSuit[0] && currentCard->hidden == false && currentCard->next == NULL) {
+        } else if (currentCard->value[0] == selectedSourceCardValue[0] &&
+                   currentCard->suit[0] == selectedSourceCardSuit[0] && currentCard->hidden == false &&
+                   currentCard->next == NULL) {
             temp = currentCard;
             currentCard = NULL;
 
@@ -581,7 +583,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
             //temp is given a pointer
             temp = currentCard->next;
         }
-        if (currentCard1 == NULL){
+        if (currentCard1 == NULL) {
 
         } else {
             //finds the last card in the column we want to move the cards to
@@ -596,19 +598,20 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                 if ((currentCard1->value[0] == '2' && currentCard1->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                     //sets currentCard1 pointer to temp
                     currentCard1->next = temp;
-                    if (currentCard != NULL){
+                    if (currentCard != NULL) {
                         //sets currentcard pointer to null
                         currentCard->next = NULL;
                         //makes a card visible if it removes the last visible card
-                        if (currentCard->hidden == true ) {
+                        if (currentCard->hidden == true) {
                             currentCard->hidden = false;
-                            flippedCard = true;                        }
+                            flippedCard = true;
+                        }
 
 
-                }else {
-                    newColumn[iselectedColumn-1] = NULL;
+                    } else {
+                        newColumn[iselectedColumn - 1] = NULL;
                     }
-                    *validGameCheck=true;
+                    *validGameCheck = true;
                     break;
                 }
                 break;
@@ -632,7 +635,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
@@ -657,13 +660,13 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
-                    case '3': {
+                case '3': {
                     if ((currentCard1->value[0] == '4' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
                         noChecks) {
                         //sets currentCard1 pointer to temp
@@ -681,11 +684,11 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
-                        break;
-                    }
+                    break;
+                }
 
                 case '4': {
                     if ((currentCard1->value[0] == '5' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
@@ -705,14 +708,15 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '5': {
-                    if ((currentCard1->value[0] == '6'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '6' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
                         //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
                         if (currentCard != NULL) {
@@ -728,14 +732,15 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '6': {
-                    if ((currentCard1->value[0] == '7'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '7' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
                         //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
                         if (currentCard != NULL) {
@@ -751,14 +756,15 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '7': {
-                    if ((currentCard1->value[0] == '8'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '8' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
                         //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
                         if (currentCard != NULL) {
@@ -774,14 +780,15 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '8': {
-                    if ((currentCard1->value[0] == '9'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == '9' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
                         //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
                         if (currentCard != NULL) {
@@ -797,14 +804,15 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '9': {
-                    if ((currentCard1->value[0] == '1' && currentCard1->value[1] == '0'&& currentCard1->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                    if ((currentCard1->value[0] == '1' && currentCard1->value[1] == '0' &&
+                         currentCard1->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                         //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
                         if (currentCard != NULL) {
@@ -820,14 +828,15 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case 'J': {
-                    if ((currentCard1->value[0] == 'Q'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == 'Q' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
                         //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
                         if (currentCard != NULL) {
@@ -843,14 +852,15 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case 'Q': {
-                    if ((currentCard1->value[0] == 'K'&& currentCard1->suit[0] != selectedSourceCardSuit[0])||noChecks) {
+                    if ((currentCard1->value[0] == 'K' && currentCard1->suit[0] != selectedSourceCardSuit[0]) ||
+                        noChecks) {
                         //sets currentCard1 pointer to temp
                         currentCard1->next = temp;
                         if (currentCard != NULL) {
@@ -866,7 +876,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
@@ -874,23 +884,23 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
 
                 //todo make sure it works as intended
                 case 'K': {
-                    if (newColumn[idestinationColumn- 1] == NULL||noChecks) {
+                    if (newColumn[idestinationColumn - 1] == NULL || noChecks) {
                         newColumn[idestinationColumn - 1] = temp;
-                            if (currentCard != NULL) {
-                                //sets currentcard pointer to null
-                                currentCard->next = NULL;
-                                //makes a card visible if it removes the last visible card
-                                if (currentCard->hidden == true) {
-                                    currentCard->hidden = false;
-                                    flippedCard = true;
-                                }
-
-
-                            } else {
-                                newColumn[iselectedColumn - 1] = NULL;
+                        if (currentCard != NULL) {
+                            //sets currentcard pointer to null
+                            currentCard->next = NULL;
+                            //makes a card visible if it removes the last visible card
+                            if (currentCard->hidden == true) {
+                                currentCard->hidden = false;
+                                flippedCard = true;
                             }
-                            *validGameCheck = true;
-                            break;
+
+
+                        } else {
+                            newColumn[iselectedColumn - 1] = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
 
                     } else {
                         printf("Feltet er ikke tomt ");
@@ -905,12 +915,12 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
             printf("there is no Cards in the selected Column" "\n");
             return flippedCard;
         }
-        if (currentCard == NULL){
+        if (currentCard == NULL) {
 
-        }else if(currentCard->next == NULL){
+        } else if (currentCard->next == NULL) {
             temp = currentCard;
             currentCard = NULL;
-        }else {
+        } else {
             while (currentCard->next->next != NULL) {
                 currentCard = currentCard->next;
 
@@ -918,10 +928,10 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
             temp = currentCard->next;
         }
         switch (temp->value[0]) {
-            case 'A':{
+            case 'A': {
                 if ((currentFoundationCard1 == NULL) || noChecks) {
 
-                    foundation[idestinationColumn-1] = temp;
+                    foundation[idestinationColumn - 1] = temp;
                     if (currentCard != NULL) {
                         //sets currentcard pointer to null
                         currentCard->next = NULL;
@@ -935,18 +945,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                     } else {
                         newColumn[iselectedColumn - 1] = NULL;
                     }
-                    *validGameCheck=true;
+                    *validGameCheck = true;
                     break;
                 }
                 break;
             }
             case '1': {
                 if (temp->value[1] == '0') {
-                    if ((currentFoundationCard1->value[0] == '9' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == '9' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -960,18 +971,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '2': {
-                    if ((currentFoundationCard1->value[0] == 'A' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == 'A' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -985,18 +997,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '3': {
-                    if ((currentFoundationCard1->value[0] == '2' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == '2' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1010,18 +1023,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '4': {
-                    if ((currentFoundationCard1->value[0] == '3' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == '3' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1035,18 +1049,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '5': {
-                    if ((currentFoundationCard1->value[0] == '4' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == '4' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1060,18 +1075,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '6': {
-                    if ((currentFoundationCard1->value[0] == '5' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == '5' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1085,18 +1101,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '7': {
-                    if ((currentFoundationCard1->value[0] == '6' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == '6' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1110,18 +1127,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '8': {
-                    if ((currentFoundationCard1->value[0] == '7' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == '7' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1135,18 +1153,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case '9': {
-                    if ((currentFoundationCard1->value[0] == '8' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == '8' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1160,7 +1179,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
@@ -1172,7 +1191,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1186,18 +1205,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
 
                 case 'Q': {
-                    if ((currentFoundationCard1->value[0] == 'J' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == 'J' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1211,18 +1231,19 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
-                        *validGameCheck=true;
+                        *validGameCheck = true;
                         break;
                     }
                     break;
                 }
                 //todo make sure it works as intended
                 case 'K': {
-                    if ((currentFoundationCard1->value[0] == 'Q' && currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
+                    if ((currentFoundationCard1->value[0] == 'Q' &&
+                         currentFoundationCard1->suit[0] == selectedSourceCardSuit[0]) ||
                         noChecks) {
                         temp->next = currentFoundationCard1;
                         currentFoundationCard1 = temp;
-                        foundation[idestinationColumn-1] = currentFoundationCard1;
+                        foundation[idestinationColumn - 1] = currentFoundationCard1;
                         if (currentCard != NULL) {
                             //sets currentcard pointer to null
                             currentCard->next = NULL;
@@ -1237,13 +1258,13 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                             newColumn[iselectedColumn - 1] = NULL;
                         }
                         int checkForWin;
-                        *validGameCheck=true;
-                        for (int i = 0; i < 4 ; i++) {
-                            if (foundation[i]->value=='K'){
+                        *validGameCheck = true;
+                        for (int i = 0; i < 4; i++) {
+                            if (foundation[i]->value[0] == 'K') {
                                 checkForWin++;
                             }
                         }
-                        if ( checkForWin == 4){
+                        if (checkForWin == 4) {
                             printf("Du har vundet");
                             gameWon = true;
                             return true;
@@ -1255,60 +1276,259 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
 
             }
         }
-    }else {
+    } else {
+        Card *currentColumnCard = newColumn[idestinationColumn - 1];
+        Card *currentFoundationCard = foundation[iselectedColumn-1];
+        Card *tempFoundation;
 
-    }
+        if (currentFoundationCard == NULL){
+            printf("there is no Card in the selected foundation" "\n");
+            return flippedCard;
+        } else if(currentFoundationCard->value[0] == selectedSourceCardValue[0] && currentFoundationCard->suit[0] == selectedSourceCardSuit[0]){
+            tempFoundation = currentFoundationCard;
+        }
+        if (currentColumnCard == NULL) {
 
+        } else {
+            //finds the last card in the column we want to move the cards to
+            while (currentColumnCard->next != NULL) {
+                currentColumnCard = currentColumnCard->next;
+            }
+            switch (tempFoundation->value[0]) {
+                case 'A': {
+                    //checks if the currentCard1 value is bigger than currentCard
+                    if ((currentColumnCard->value[0] == '2' &&
+                         currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                        //sets currentCard1 pointer to temp
+                        currentColumnCard->next = tempFoundation;
+                        foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                        currentFoundationCard = NULL;
+                    }
+                    *validGameCheck = true;
+                    break;
+                }
+                    break;
+                case '1': {
+                    if (temp->value[1] == '0') {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == 'j' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
+                    case '2': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == '3' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
-    return flippedCard;
-}
+                    case '3': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == '4' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
+                    case '4': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == '5' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
+                    case '5': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == '6' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
+                    case '6': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == '7' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
-void undoMove(Card ** column, Card **foundation){
-    char sourceColumn[2];
-    sourceColumn[0]=moveStack->dest[0];
-    sourceColumn[1]=moveStack->dest[1];
-    char * value=moveStack->cardValue;
-    char * suit=moveStack->cardSuit;
-    char destColumn[2];
-    destColumn[0]=moveStack->source[0];
-    destColumn[1]=moveStack->source[1];
+                    case '7': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == '8' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
-        // Checks if the move needs to make a card hidden in the destination column
-    if(destColumn[0]=='C'&&moveStack->flippedCard==true) {
-        int destColumnIndex=destColumn[1]-'0'-1;
+                    case '8': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == '9' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
-        //currentCard is the top card of the destination column
-        Card* currentCard=column[destColumnIndex];
+                    case '9': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == '1' && currentColumnCard->value[1] == '0' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
-        //Should skip everything if the destination column is empty
-        if(currentCard!=NULL) {
+                    case 'J': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == 'Q' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
 
-            //Traverses the linked list until reaching a card that is not hidden.
-            while (currentCard->hidden==true) {
-                currentCard = currentCard->next;
+                    case 'Q': {
+                        //checks if the currentCard1 value is bigger than currentCard
+                        if ((currentColumnCard->value[0] == 'K' &&
+                             currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                            //sets currentCard1 pointer to temp
+                            currentColumnCard->next = tempFoundation;
+                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            currentFoundationCard = NULL;
+                        }
+                        *validGameCheck = true;
+                        break;
+                    }
+                    break;
+
+                    //todo make sure it works as intended
+                    case 'K': {
+                        if (newColumn[idestinationColumn - 1] == NULL || noChecks) {
+                            newColumn[idestinationColumn - 1] = temp;
+
+                            *validGameCheck = true;
+                            break;
+
+                        } else {
+                            printf("Feltet er ikke tomt ");
+                            break;
+                        }
+                    }
+                }
             }
 
-            //If the card is the first and last not hidden of that column, it should be flipped.
-            if(currentCard->next==NULL){
-                currentCard->hidden=true;
-            }
         }
     }
-    bool validGameCheck;
-    gameMove(column,foundation,sourceColumn,value,suit,destColumn,true,&validGameCheck);
 
 
 
-    push(&undoStack,moveStack->dest,moveStack->source,value,suit,false);
-    pop(&moveStack);
-}
+        return flippedCard;
+    }
 
 
-int main() {
-    startStartupPhase();
-    return 0;
-}
+    void undoMove(Card **column, Card **foundation) {
+        char sourceColumn[2];
+        sourceColumn[0] = moveStack->dest[0];
+        sourceColumn[1] = moveStack->dest[1];
+        char *value = moveStack->cardValue;
+        char *suit = moveStack->cardSuit;
+        char destColumn[2];
+        destColumn[0] = moveStack->source[0];
+        destColumn[1] = moveStack->source[1];
+
+        // Checks if the move needs to make a card hidden in the destination column
+        if (destColumn[0] == 'C' && moveStack->flippedCard == true) {
+            int destColumnIndex = destColumn[1] - '0' - 1;
+
+            //currentCard is the top card of the destination column
+            Card *currentCard = column[destColumnIndex];
+
+            //Should skip everything if the destination column is empty
+            if (currentCard != NULL) {
+
+                //Traverses the linked list until reaching a card that is not hidden.
+                while (currentCard->hidden == true) {
+                    currentCard = currentCard->next;
+                }
+
+                //If the card is the first and last not hidden of that column, it should be flipped.
+                if (currentCard->next == NULL) {
+                    currentCard->hidden = true;
+                }
+            }
+        }
+        bool validGameCheck;
+        gameMove(column, foundation, sourceColumn, value, suit, destColumn, true, &validGameCheck);
+
+
+        push(&undoStack, moveStack->dest, moveStack->source, value, suit, false);
+        pop(&moveStack);
+    }
+
+
+    int main() {
+        startStartupPhase();
+        return 0;
+    }
