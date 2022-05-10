@@ -292,6 +292,37 @@ Card * extractLast(Card card){
      */
 }
 
+/**
+ * Prints for the setuphase
+ */
+void printSetupState(Card * deck){
+    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
+
+    int foundationIndex=0;
+    int column=0;
+    Card * currentCard=deck;
+
+    while(currentCard->next!=NULL){
+        printf("%s%s\t",currentCard->value,currentCard->suit);
+        currentCard=currentCard->next;
+
+        column++;
+        if(column==8){
+            column=0;
+            foundationIndex++;
+            if(foundationIndex%2==0|) {
+                printf("\t[]");
+            }
+            printf("\n");
+        }
+    }
+
+}
+
+/**
+ *
+ */
+
 
 /**
  * Prints out the game state. Should be called after each input and action.
@@ -379,15 +410,7 @@ void startStartupPhase() {
             // prints loaded deck
             case 'S'+'W':
                 if (deck != NULL) {
-                    dealCards(deck, column);
-                    for (int i = 0; i <7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
-                        reverseList(&column[i]);                           // Alternatively we could have made the linked lists double..
-                    }
-                    makeHidden(column);
-                    printGameState(&column,&foundation);
-                    for (int i = 0; i <7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
-                        column[i]=NULL;                          // Alternatively we could have made the linked lists double..
-                    }
+                    printSetupState(deck);
                 }else {
                     printf("No deck loaded");
                 }
@@ -1320,6 +1343,7 @@ void undoMove(Card ** column, Card **foundation){
 
 
 int main() {
+    printf("Yukon");
     startStartupPhase();
     return 0;
 }
