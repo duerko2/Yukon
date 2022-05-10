@@ -35,6 +35,8 @@ void endGame();
 void startPlayPhase(Card* deck, Card *column[]);
 void undoMove(Card ** column, Card **foundation);
 
+void redoMove(Card **pCard, struct card *pCard1[4]);
+
 /**
  * Creates a struct of type Card. Holds the suit and value.
  * TODO: The struct also needs to hold a boolean representing if the card is face up or face down.
@@ -471,6 +473,11 @@ void startPlayPhase(Card* deck, Card ** column) {
                 undoMove(column,foundation);
                 break;
             case 'R':
+                if(undoStack==NULL){
+                    printf("You can't redo a move right now.\n");
+                } else{
+                    redoMove(column,foundation);
+                }
                 break;
             case 'L':
                 break;
@@ -537,6 +544,8 @@ void startPlayPhase(Card* deck, Card ** column) {
         }
     }
 }
+
+
 
 void endGame() {
     exit(0);
@@ -1243,6 +1252,26 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
 
 
     return flippedCard;
+}
+
+void redoMove(Card **column, struct card *foundation[4]) {
+    char sourceColumn[2];
+    sourceColumn[0]=undoStack->dest[0];
+    sourceColumn[1]=undoStack->dest[1];
+    char * value=undoStack->cardValue;
+    char * suit=undoStack->cardSuit;
+    char destColumn[2];
+    destColumn[0]=undoStack->source[0];
+    destColumn[1]=undoStack->source[1];
+
+    bool validGameCheck;
+    gameMove(column,foundation,sourceColumn,value,suit,destColumn,true,&validGameCheck);
+
+
+
+    push(&moveStack,undoStack->dest,undoStack->source,value,suit,false);
+    pop(&undoStack);
+
 }
 
 void undoMove(Card ** column, Card **foundation){
