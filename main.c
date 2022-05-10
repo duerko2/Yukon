@@ -294,28 +294,57 @@ Card * extractLast(Card card){
 
 /**
  * Prints for the setuphase
+ * @param deck The loaded deck.
+ * @param show Whether to show the cards from  the deck or not.
  */
-void printSetupState(Card * deck){
+void printSetupState(Card * deck,bool show){
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
 
     int foundationIndex=0;
     int column=0;
     Card * currentCard=deck;
 
-    while(currentCard->next!=NULL){
-        printf("%s%s\t",currentCard->value,currentCard->suit);
-        currentCard=currentCard->next;
+    //Prints the board with the loaded deck.
+if(deck!=NULL) {
+    while (currentCard->next != NULL) {
+        if (show) {
+            printf("%s%s\t", currentCard->value, currentCard->suit);
+        } else {
+            printf("[]\t");
+        }
+        currentCard = currentCard->next;
 
         column++;
-        if(column==8){
-            column=0;
-            foundationIndex++;
-            if(foundationIndex%2==0|) {
+        if (column == 8) {
+            column = 0;
+            if (foundationIndex % 2 == 0 || foundationIndex == 0) {
                 printf("\t[]");
             }
+            foundationIndex++;
             printf("\n");
         }
     }
+    if (show) {
+        printf("%s%s\t\t\t\t\t\t[]\n", currentCard->value, currentCard->suit);
+    } else {
+        printf("[]\t\t\t\t\t\t[]\n");
+    }
+} else{ // Prints the empty board..
+    while (foundationIndex<7) {
+        printf("\t");
+
+        column++;
+        if (column == 8) {
+            column = 0;
+            if (foundationIndex % 2 == 0 || foundationIndex == 0) {
+                printf("\t[]");
+            }
+            foundationIndex++;
+            printf("\n");
+        }
+    }
+}
+
 
 }
 
@@ -397,20 +426,27 @@ void makeHidden(Card * column[]){
 }
 
 void startStartupPhase() {
-    Card *deck;
+    Card *deck=NULL;
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     Card * foundation[] = {NULL,NULL,NULL,NULL};
     char str1[20];
     printf("You're in startup phase" "\n");
+    printSetupState(deck,false);
+
+
     while (true) {
-        printf("Write input in console""\n");
+
+        printf("LAST Command: ");
+        printf(str1);
+        printf("\n");
+        printf("INPUT>");
         scanf("%20s",str1);
 
         switch(str1[0]+str1[1]) {
             // prints loaded deck
             case 'S'+'W':
                 if (deck != NULL) {
-                    printSetupState(deck);
+                    printSetupState(deck,true);
                 }else {
                     printf("No deck loaded");
                 }
@@ -430,8 +466,12 @@ void startStartupPhase() {
                 }
                 // loads standard deck
                 else {
+                    if(deck!= NULL){
+                        deck=NULL;
+                    }
                     deck = createDeck();
                 }
+                printSetupState(deck,false);
                 break;
                 // shuffles deck
             case 'S'+'R':
@@ -439,6 +479,7 @@ void startStartupPhase() {
                     deck = shuffleDeck(deck);
                 } else
                     printf("No deck loaded");
+                printSetupState(deck,false);
                 break;
 
             case 'Q'+'Q':
