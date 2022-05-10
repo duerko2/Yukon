@@ -102,7 +102,6 @@ void push(MoveStack** stackPointer, char *source, char *dest, char * cardValue, 
     node->flippedCard=cardFlipped;
     node->next = *stackPointer;
     *stackPointer = node;
-    printf("%s:%s,%s%s pushed to stack\n",source,dest,cardValue,cardSuit);
 }
 
 /**
@@ -110,12 +109,11 @@ void push(MoveStack** stackPointer, char *source, char *dest, char * cardValue, 
  * @param stackPointer Pointer to top of stack
  */
 void pop(MoveStack** stackPointer){
-    if(isEmpty(stackPointer)){                                                                              // Check if stack is empty. Should never happen in our game,
-        return;                                                                                             // but still a good guard to include.
+    if(isEmpty(stackPointer)){         // Check if stack is empty. Should never happen in our game,
+        return;                        // but still a good guard to include.
     }
     MoveStack* temp = *stackPointer;
     *stackPointer = (*stackPointer)->next;
-    printf("%s:%s,%s%s popped from stack\n",temp->source,temp->dest,temp->cardValue,temp->cardSuit);
     free(temp);
 }
 
@@ -185,9 +183,7 @@ Card * createDeck(){
  * @return
  */
 Card * shuffleDeck(Card* head_ref){
-
     Card *shuffledeck = NULL;
-
     Card* current = head_ref;
     Card* next;
     Card* temp;
@@ -197,11 +193,7 @@ Card * shuffleDeck(Card* head_ref){
     shuffledeck->next=shuffledeck;
 
     for (int i=0;i<51;i++){
-
         int ran = randomNumber();
-
-        //current = current -> next;
-
         for (int k=0; k < ran; k++){
             shuffledeck = shuffledeck->next;
         }
@@ -209,16 +201,14 @@ Card * shuffleDeck(Card* head_ref){
         current -> next = shuffledeck -> next;
         shuffledeck -> next = current;
         current = temp;
-
     }
 
     temp = shuffledeck;
-
     for (int o = 0; o < 51; o++){
         temp = temp->next;
     }
-    temp -> next = NULL;
 
+    temp -> next = NULL;
     return shuffledeck;
 }
 
@@ -409,7 +399,9 @@ void printGameState(Card ** column,Card ** foundation){
 
             if(currentFoundation!=NULL) {
                 Card * currentFoundation=foundation[foundationIndex];
-                printf("\t[%s%s]", foundation[foundationIndex]->value, foundation[foundationIndex]->suit);
+                printf("\t[%s%s]\tF", foundation[foundationIndex]->value, foundation[foundationIndex]->suit);
+                printf(foundationNum[foundationNumIndex]);
+                foundationNumIndex++;
             } else {
                 printf("\t[]\tF");
                 printf(foundationNum[foundationNumIndex]);
