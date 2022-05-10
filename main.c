@@ -28,7 +28,9 @@ typedef struct moveStack {
 MoveStack *moveStack=NULL;
 MoveStack *undoStack=NULL;
 
-bool gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2],bool noChecks, bool *validGameCheck);
+bool gameWon;
+
+bool gameMove(Card **newColumn, struct card *foundation[4], char selectedColumn[2], char selectedSourceCardValue[3], char selectedSourceCardSuit[2], char destinationColumn[2], bool noChecks, bool *validGameCheck);
 
 void endGame();
 
@@ -455,7 +457,10 @@ void startPlayPhase(Card* deck, Card ** column) {
 
     while (true) {
         printGameState(column,foundation);
-
+        if (gameWon){
+            return;
+            break;
+        }
         printf("Enter input: ");
         scanf("%19s", input);
         switch (input[0] + input[1]) {
@@ -555,7 +560,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
     bool flippedCard=false;
     //if(selectedColumn[0] == 'C' && selectedColumn[1] <8 && selectedColumn[1] >0 && selectedSourceCardValue[0] < 10 && selectedSourceCardValue[0] >0 || selectedSourceCardValue[0] == 'J' || selectedSourceCardValue[0] == 'Q' || selectedSourceCardValue[0] == 'K'|| selectedSourceCardValue[1]== 0  && selectedSourceCardSuit[0] == 'S' || selectedSourceCardSuit[0] == 'C' || selectedSourceCardSuit[0] == 'D' || selectedSourceCardSuit[0] == 'H' && destinationColumn[0] == 'C' || destinationColumn[0] == 'F'  ){
     //chcks if it is a column or foundation
-    if (destinationColumn[0] == 'C') {
+    if (destinationColumn[0] == 'C'&& selectedColumn[0] == 'C') {
         Card *currentCard1 = newColumn[idestinationColumn - 1];
         //checks if it is possible to take cards from the column by checking if the column is empty
         if (currentCard == NULL) {
@@ -894,7 +899,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                 }
             }
         }
-    } else {
+    } else if (selectedColumn[0] == 'C') {
         Card *currentFoundationCard1 = foundation[idestinationColumn - 1];
         if (currentCard == NULL) {
             printf("there is no Cards in the selected Column" "\n");
@@ -1231,7 +1236,18 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         } else {
                             newColumn[iselectedColumn - 1] = NULL;
                         }
+                        int checkForWin;
                         *validGameCheck=true;
+                        for (int i = 0; i < 4 ; i++) {
+                            if (foundation[i]->value=='K'){
+                                checkForWin++;
+                            }
+                        }
+                        if ( checkForWin == 4){
+                            printf("Du har vundet");
+                            gameWon = true;
+                            return true;
+                        }
                         break;
                     }
                     break;
@@ -1239,11 +1255,17 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
 
             }
         }
+    }else {
+
     }
+
 
 
     return flippedCard;
 }
+
+
+
 
 void undoMove(Card ** column, Card **foundation){
     char sourceColumn[2];
