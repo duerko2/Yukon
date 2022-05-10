@@ -37,6 +37,8 @@ void endGame();
 void startPlayPhase(Card* deck, Card *column[]);
 void undoMove(Card ** column, Card **foundation);
 
+void redoMove(Card **pCard, struct card *pCard1[4]);
+
 /**
  * Creates a struct of type Card. Holds the suit and value.
  * TODO: The struct also needs to hold a boolean representing if the card is face up or face down.
@@ -292,6 +294,76 @@ Card * extractLast(Card card){
      */
 }
 
+/**
+ * Prints for the setuphase
+ * @param deck The loaded deck.
+ * @param show Whether to show the cards from  the deck or not.
+ */
+void printSetupState(Card * deck,bool show){
+    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
+
+    int foundationIndex=0;
+    int column=0;
+    int foundationNumIndex=0;
+    char *foundationNum[]={"1","2","3","4"};
+    Card * currentCard=deck;
+
+    //Prints the board with the loaded deck.
+if(deck!=NULL) {
+    while (currentCard->next != NULL) {
+        if (show) {
+            printf("%s%s\t", currentCard->value, currentCard->suit);
+        } else {
+            printf("[]\t");
+        }
+        currentCard = currentCard->next;
+
+        column++;
+        if (column == 8) {
+            column = 0;
+            if (foundationIndex % 2 == 0 || foundationIndex == 0) {
+                printf("\t[]\tF");
+                printf(foundationNum[foundationNumIndex]);
+                foundationNumIndex++;
+            }
+            foundationIndex++;
+            printf("\n");
+        }
+    }
+    if (show) {
+        printf("%s%s\t\t\t\t\t\t[]\tF", currentCard->value, currentCard->suit);
+        printf(foundationNum[foundationNumIndex]);
+        printf("\n");
+    } else {
+        printf("[]\t\t\t\t\t\t[]\tF");
+        printf(foundationNum[foundationNumIndex]);
+        printf("\n");
+    }
+} else{ // Prints the empty board..
+    while (foundationIndex<7) {
+        printf("\t");
+
+        column++;
+        if (column == 8) {
+            column = 0;
+            if (foundationIndex % 2 == 0 || foundationIndex == 0) {
+                printf("\t[]\tF");
+                printf(foundationNum[foundationNumIndex]);
+                foundationNumIndex++;
+            }
+            foundationIndex++;
+            printf("\n");
+        }
+    }
+}
+
+
+}
+
+/**
+ *
+ */
+
 
 /**
  * Prints out the game state. Should be called after each input and action.
@@ -301,6 +373,8 @@ void printGameState(Card ** column,Card ** foundation){
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
 
     int foundationIndex=0;
+    int foundationNumIndex=0;
+    char *foundationNum[]={"1","2","3","4"};
 
     for(int j=0;j<52;j++) {
         bool finished=true;                                     // @finished Helps us keep track of the columns.
@@ -322,7 +396,10 @@ void printGameState(Card ** column,Card ** foundation){
                 } else{
                     if(!currentCard->hidden){
                         printf("%s%s\t", currentCard->value, currentCard->suit);
-                    } else{printf("[]\t");}
+                    } else{
+                        printf("[]\t");
+
+                    }
                     finished=false;                             // @finished Will switch to false if there was a card
                 }
             }
@@ -334,7 +411,9 @@ void printGameState(Card ** column,Card ** foundation){
                 Card * currentFoundation=foundation[foundationIndex];
                 printf("\t[%s%s]", foundation[foundationIndex]->value, foundation[foundationIndex]->suit);
             } else {
-                printf("\t[]");
+                printf("\t[]\tF");
+                printf(foundationNum[foundationNumIndex]);
+                foundationNumIndex++;
             }
             foundationIndex++;
         }
@@ -366,30 +445,30 @@ void makeHidden(Card * column[]){
 }
 
 void startStartupPhase() {
-    Card *deck;
+    Card *deck=NULL;
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     Card * foundation[] = {NULL,NULL,NULL,NULL};
     char str1[20];
+    str1[0]='\0';
     printf("You're in startup phase" "\n");
+    printSetupState(deck,false);
+
+
     while (true) {
-        printf("Write input in console""\n");
+
+        printf("LAST Command: ");
+        printf(str1);
+        printf("\n");
+        printf("INPUT>");
         scanf("%20s",str1);
 
         switch(str1[0]+str1[1]) {
             // prints loaded deck
             case 'S'+'W':
                 if (deck != NULL) {
-                    dealCards(deck, column);
-                    for (int i = 0; i <7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
-                        reverseList(&column[i]);                           // Alternatively we could have made the linked lists double..
-                    }
-                    makeHidden(column);
-                    printGameState(&column,&foundation);
-                    for (int i = 0; i <7; i++) {                                       // Reverses the 7 columns, so top card is at beginning of list.
-                        column[i]=NULL;                          // Alternatively we could have made the linked lists double..
-                    }
+                    printSetupState(deck,true);
                 }else {
-                    printf("No deck loaded");
+                    printf("No deck loaded\n");
                 }
                 break;
                 case 'L'+'D':
@@ -407,15 +486,20 @@ void startStartupPhase() {
                 }
                 // loads standard deck
                 else {
+                    if(deck!= NULL){
+                        deck=NULL;
+                    }
                     deck = createDeck();
                 }
+                printSetupState(deck,false);
                 break;
                 // shuffles deck
             case 'S'+'R':
                 if ( deck != NULL) {
                     deck = shuffleDeck(deck);
                 } else
-                    printf("No deck loaded");
+                    printf("No deck loaded\n");
+                printSetupState(deck,false);
                 break;
 
             case 'Q'+'Q':
@@ -433,13 +517,14 @@ void startStartupPhase() {
                     makeHidden(column);
                 }
 
+                printf("You're in play phase\n");
                 startPlayPhase(deck, column);
 
                 break;
 
 
             default:
-                printf("Dette er ikke en kommando.""\n");
+                printf("This is not a command.\n");
 
         }
     }
@@ -449,6 +534,7 @@ void startPlayPhase(Card* deck, Card ** column) {
     Card *foundation[]={NULL,NULL,NULL,NULL};
 
     char input[20];
+    input[0]='\0';
     char selectedColumn[2];
     char selectedSourceCardValue[3];
     char selectedSourceCardSuit[2];
@@ -461,7 +547,10 @@ void startPlayPhase(Card* deck, Card ** column) {
             return;
             break;
         }
-        printf("Enter input: ");
+        printf("LAST Command: ");
+        printf(input);
+        printf("\n");
+        printf("INPUT> ");
         scanf("%19s", input);
         switch (input[0] + input[1]) {
             case 'Q' + 'Q':
@@ -473,9 +562,18 @@ void startPlayPhase(Card* deck, Card ** column) {
                 return;
                 break;
             case 'U':
-                undoMove(column,foundation);
+                if(moveStack==NULL){
+                    printf("You can't undo a move right now.\n");
+                } else {
+                    undoMove(column, foundation);
+                }
                 break;
             case 'R':
+                if(undoStack==NULL){
+                    printf("You can't redo a move right now.\n");
+                } else{
+                    redoMove(column,foundation);
+                }
                 break;
             case 'L':
                 break;
@@ -542,6 +640,8 @@ void startPlayPhase(Card* deck, Card ** column) {
         }
     }
 }
+
+
 
 void endGame() {
     exit(0);
@@ -1278,13 +1378,14 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
         }
     } else {
         Card *currentColumnCard = newColumn[idestinationColumn - 1];
-        Card *currentFoundationCard = foundation[iselectedColumn-1];
+        Card *currentFoundationCard = foundation[iselectedColumn - 1];
         Card *tempFoundation;
 
-        if (currentFoundationCard == NULL){
+        if (currentFoundationCard == NULL) {
             printf("there is no Card in the selected foundation" "\n");
             return flippedCard;
-        } else if(currentFoundationCard->value[0] == selectedSourceCardValue[0] && currentFoundationCard->suit[0] == selectedSourceCardSuit[0]){
+        } else if (currentFoundationCard->value[0] == selectedSourceCardValue[0] &&
+                   currentFoundationCard->suit[0] == selectedSourceCardSuit[0]) {
             tempFoundation = currentFoundationCard;
         }
         if (currentColumnCard == NULL) {
@@ -1484,19 +1585,39 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
 
 
 
+
         return flippedCard;
     }
 
+void redoMove(Card **column, struct card *foundation[4]) {
+    char sourceColumn[2];
+    sourceColumn[0]=undoStack->dest[0];
+    sourceColumn[1]=undoStack->dest[1];
+    char * value=undoStack->cardValue;
+    char * suit=undoStack->cardSuit;
+    char destColumn[2];
+    destColumn[0]=undoStack->source[0];
+    destColumn[1]=undoStack->source[1];
 
-    void undoMove(Card **column, Card **foundation) {
-        char sourceColumn[2];
-        sourceColumn[0] = moveStack->dest[0];
-        sourceColumn[1] = moveStack->dest[1];
-        char *value = moveStack->cardValue;
-        char *suit = moveStack->cardSuit;
-        char destColumn[2];
-        destColumn[0] = moveStack->source[0];
-        destColumn[1] = moveStack->source[1];
+    bool validGameCheck;
+    gameMove(column,foundation,sourceColumn,value,suit,destColumn,true,&validGameCheck);
+
+
+
+    push(&moveStack,undoStack->dest,undoStack->source,value,suit,false);
+    pop(&undoStack);
+
+}
+
+void undoMove(Card ** column, Card **foundation){
+    char sourceColumn[2];
+    sourceColumn[0]=moveStack->dest[0];
+    sourceColumn[1]=moveStack->dest[1];
+    char * value=moveStack->cardValue;
+    char * suit=moveStack->cardSuit;
+    char destColumn[2];
+    destColumn[0]=moveStack->source[0];
+    destColumn[1]=moveStack->source[1];
 
         // Checks if the move needs to make a card hidden in the destination column
         if (destColumn[0] == 'C' && moveStack->flippedCard == true) {
