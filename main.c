@@ -371,6 +371,8 @@ void printGameState(Card ** column,Card ** foundation){
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\t\t\t\n\n");
 
     int foundationIndex=0;
+    int foundationNumIndex=0;
+    char *foundationNum[]={"1","2","3","4"};
 
     for(int j=0;j<52;j++) {
         bool finished=true;                                     // @finished Helps us keep track of the columns.
@@ -392,7 +394,10 @@ void printGameState(Card ** column,Card ** foundation){
                 } else{
                     if(!currentCard->hidden){
                         printf("%s%s\t", currentCard->value, currentCard->suit);
-                    } else{printf("[]\t");}
+                    } else{
+                        printf("[]\t");
+
+                    }
                     finished=false;                             // @finished Will switch to false if there was a card
                 }
             }
@@ -404,7 +409,9 @@ void printGameState(Card ** column,Card ** foundation){
                 Card * currentFoundation=foundation[foundationIndex];
                 printf("\t[%s%s]", foundation[foundationIndex]->value, foundation[foundationIndex]->suit);
             } else {
-                printf("\t[]");
+                printf("\t[]\tF");
+                printf(foundationNum[foundationNumIndex]);
+                foundationNumIndex++;
             }
             foundationIndex++;
         }
@@ -440,6 +447,7 @@ void startStartupPhase() {
     Card * column[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
     Card * foundation[] = {NULL,NULL,NULL,NULL};
     char str1[20];
+    str1[0]='\0';
     printf("You're in startup phase" "\n");
     printSetupState(deck,false);
 
@@ -507,6 +515,7 @@ void startStartupPhase() {
                     makeHidden(column);
                 }
 
+                printf("You're in play phase\n");
                 startPlayPhase(deck, column);
 
                 break;
@@ -523,6 +532,7 @@ void startPlayPhase(Card* deck, Card ** column) {
     Card *foundation[]={NULL,NULL,NULL,NULL};
 
     char input[20];
+    input[0]='\0';
     char selectedColumn[2];
     char selectedSourceCardValue[3];
     char selectedSourceCardSuit[2];
@@ -532,7 +542,10 @@ void startPlayPhase(Card* deck, Card ** column) {
     while (true) {
         printGameState(column,foundation);
 
-        printf("Enter input: ");
+        printf("LAST Command: ");
+        printf(input);
+        printf("\n");
+        printf("INPUT> ");
         scanf("%19s", input);
         switch (input[0] + input[1]) {
             case 'Q' + 'Q':
