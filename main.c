@@ -302,6 +302,8 @@ void printSetupState(Card * deck,bool show){
 
     int foundationIndex=0;
     int column=0;
+    int foundationNumIndex=0;
+    char *foundationNum[]={"1","2","3","4"};
     Card * currentCard=deck;
 
     //Prints the board with the loaded deck.
@@ -318,16 +320,22 @@ if(deck!=NULL) {
         if (column == 8) {
             column = 0;
             if (foundationIndex % 2 == 0 || foundationIndex == 0) {
-                printf("\t[]");
+                printf("\t[]\tF");
+                printf(foundationNum[foundationNumIndex]);
+                foundationNumIndex++;
             }
             foundationIndex++;
             printf("\n");
         }
     }
     if (show) {
-        printf("%s%s\t\t\t\t\t\t[]\n", currentCard->value, currentCard->suit);
+        printf("%s%s\t\t\t\t\t\t[]\tF", currentCard->value, currentCard->suit);
+        printf(foundationNum[foundationNumIndex]);
+        printf("\n");
     } else {
-        printf("[]\t\t\t\t\t\t[]\n");
+        printf("[]\t\t\t\t\t\t[]\tF");
+        printf(foundationNum[foundationNumIndex]);
+        printf("\n");
     }
 } else{ // Prints the empty board..
     while (foundationIndex<7) {
@@ -337,7 +345,9 @@ if(deck!=NULL) {
         if (column == 8) {
             column = 0;
             if (foundationIndex % 2 == 0 || foundationIndex == 0) {
-                printf("\t[]");
+                printf("\t[]\tF");
+                printf(foundationNum[foundationNumIndex]);
+                foundationNumIndex++;
             }
             foundationIndex++;
             printf("\n");
@@ -448,7 +458,7 @@ void startStartupPhase() {
                 if (deck != NULL) {
                     printSetupState(deck,true);
                 }else {
-                    printf("No deck loaded");
+                    printf("No deck loaded\n");
                 }
                 break;
                 case 'L'+'D':
@@ -478,7 +488,7 @@ void startStartupPhase() {
                 if ( deck != NULL) {
                     deck = shuffleDeck(deck);
                 } else
-                    printf("No deck loaded");
+                    printf("No deck loaded\n");
                 printSetupState(deck,false);
                 break;
 
@@ -503,7 +513,7 @@ void startStartupPhase() {
 
 
             default:
-                printf("Dette er ikke en kommando.""\n");
+                printf("This is not a command.\n");
 
         }
     }
@@ -1384,7 +1394,6 @@ void undoMove(Card ** column, Card **foundation){
 
 
 int main() {
-    printf("Yukon");
     startStartupPhase();
     return 0;
 }
