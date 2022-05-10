@@ -1402,7 +1402,7 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                          currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                         //sets currentCard1 pointer to temp
                         currentColumnCard->next = tempFoundation;
-                        foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                        foundation[iselectedColumn - 1] = NULL;
                         currentFoundationCard = NULL;
                     }
                     *validGameCheck = true;
@@ -1415,8 +1415,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == 'j' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1426,25 +1427,27 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
 
                     case '2': {
                         //checks if the currentCard1 value is bigger than currentCard
-                        if ((currentColumnCard->value[0] == '3' &&
+                        /*if ((currentColumnCard->value[0] == '3' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
+                             */
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
-                            foundation[iselectedColumn - 1] = currentFoundationCard->next;
-                            currentFoundationCard = NULL;
+                        foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                        tempFoundation->next =NULL;
+                        currentColumnCard->next = tempFoundation;
+                        currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
                         break;
-                    }
-                    break;
+
 
                     case '3': {
                         //checks if the currentCard1 value is bigger than currentCard
                         if ((currentColumnCard->value[0] == '4' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1457,8 +1460,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == '5' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1471,8 +1475,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == '6' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1485,8 +1490,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == '7' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1499,8 +1505,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == '8' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1513,8 +1520,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == '9' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1527,8 +1535,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == '1' && currentColumnCard->value[1] == '0' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1541,8 +1550,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == 'Q' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
@@ -1555,8 +1565,9 @@ bool gameMove(Card **newColumn, Card *foundation[4], char selectedColumn[2], cha
                         if ((currentColumnCard->value[0] == 'K' &&
                              currentColumnCard->suit[0] != selectedSourceCardSuit[0]) || noChecks) {
                             //sets currentCard1 pointer to temp
-                            currentColumnCard->next = tempFoundation;
                             foundation[iselectedColumn - 1] = currentFoundationCard->next;
+                            tempFoundation->next =NULL;
+                            currentColumnCard->next = tempFoundation;
                             currentFoundationCard = NULL;
                         }
                         *validGameCheck = true;
