@@ -471,7 +471,7 @@ void startPlayPhase(Card* deck, Card ** column) {
                 break;
             case 'U':
                 if(moveStack==NULL){
-                    printf("You can't undo a move right now.\n")
+                    printf("You can't undo a move right now.\n");
                 } else {
                     undoMove(column, foundation);
                 }
